@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './Stylesheets/index.css';
 import RouteSwitch from './RouteSwitch';
 import reportWebVitals from './reportWebVitals';
 
