@@ -1,0 +1,1 @@
+const userInstance = require("../models/postsmod");
