@@ -1,0 +1,25 @@
+html, body, #root, .Profile {
+    height: 100%;
+}
+
+.Profile {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 10px;
+    background-color: rgb(29, 161, 242);
+}
+
+.UserInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    border-radius: 25px;
+    background-color: rgb(245, 248, 250);
+}
+
+.rowC {
+    display: flex;
+    flex-direction: row;
+}
