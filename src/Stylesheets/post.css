@@ -3,6 +3,7 @@
 }
 
 .Post {
+    margin: 5px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -10,7 +11,7 @@
     padding: 10px;
 
     border-radius: 25px;
-    background-color: rgb(145, 28, 28);
+    background-color: rgb(245, 248, 250);
 }
 
 .likes-dislikes {
