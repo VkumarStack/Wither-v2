@@ -2,13 +2,23 @@
     margin: 0px;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: white;
+}
+
 .Post {
     margin: 5px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-
     padding: 10px;
+
+    width: 300px;
 
     border-radius: 25px;
     background-color: rgb(245, 248, 250);
@@ -17,7 +27,7 @@
 .likes-dislikes {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 50px;
 }
 
 .like-info, .dislike-info {
