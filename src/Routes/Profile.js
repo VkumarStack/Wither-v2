@@ -12,7 +12,7 @@ class UserInfo extends React.Component {
             id: this.props.userinfo.id,
             user: this.props.userinfo.user, 
             username: this.props.userinfo.username,
-            bio: this.props.userinfo.bio
+            bio: this.props.userinfo.bio,
         };
     }
     
@@ -21,6 +21,7 @@ class UserInfo extends React.Component {
             <div className="UserInfo">
                 <h1> {this.state.user} </h1>
                 <h2> {this.state.username} </h2>
+                <h2></h2>
                 <p> {this.state.bio} </p>
             </div>
         );
@@ -42,8 +43,7 @@ class Profile extends React.Component {
                 <input type="search" id="user-search" placeholder="Search Wither" />
                 <div className='rowC' /* left column for user info, right column for posts */>
                     <div>
-                        {/*THE LINE BELOW DOESN'T WORK YET*/}
-                        {/*<UserInfo info ={{id: 111, user: "Joe Bruin", username: "@joebruin", bio: "proud mascot of UCLA"}}/>*/}
+                        <UserInfo userinfo ={{id: 111, user: "Joe Bruin", username: "@joebruin", bio: "official mascot of UCLA | boyfriend of @josiebruin"}}/>
                     </div>
                     <div className="posts">
                         <Post post={{id: 111, user: "Joe Bruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
