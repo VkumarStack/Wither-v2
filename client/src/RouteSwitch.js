@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
-import App from './Routes/App';
 import Home from './Routes/Home'
 import Profile from './Routes/Profile';
 

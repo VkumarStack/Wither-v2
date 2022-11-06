@@ -7,7 +7,7 @@ const users_controller = require("../controllers/usersController");
 /* Controller Requires */
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Users home page');
+  res.json({userlist: ["joebruin123", "penguinz0", "ludwig"]});
 });
 
 router.get("/dummy", function (req, res) {

@@ -1,0 +1,22 @@
+div.HeaderBar {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+h1 {
+    width: 30%;
+    font-size: 50px;
+}
+
+div.SearchBar {
+    width: 50%;
+}
+
+button {
+    width: 20%;
+}
+
+
