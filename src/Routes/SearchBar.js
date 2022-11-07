@@ -17,7 +17,14 @@ class SearchBar extends React.Component {
     }
 
     matchUsers(expression) {
-        if (this.state.users === null || this.state.input === null)
+        if (this.state.users === null)
+        {
+            fetch('http://localhost:8080/users')
+            .then((response) => response.json()) 
+            .then((data) => this.setState({ users: data.userlist}));
+            return;
+        }
+        if (this.state.input === null)
             return;
         let matches = []
         this.state.users.forEach(user => {
