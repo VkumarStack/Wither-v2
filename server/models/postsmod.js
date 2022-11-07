@@ -1,15 +1,20 @@
+#! /usr/bin/env node
+
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
 const PostModelSchema = new Schema({
-    a_postID: Int,
-    a_text: String,
-    a_username: String,
-    a_date: Date,
-    a_likesDisklikes: []
+    a_text: {type: String, required: true, maxLength: 100},
+    a_username:{type: String, required: true},
+    a_likes: {type: Number},
+    a_dislikes: {type: Number}
 });
 
-module.exports = mongoose.model("PostModel", PostModelSchema);
+PostModelSchema.virtual("url").get(function () {
+    return `/catalog/post/${this._id}`; 
+});
+
+module.exports = mongoose.model("Post", PostModelSchema);
 //To call this User in another class use 
 //const SomeModel = require("/...server/models/post");
