@@ -1,0 +1,60 @@
+div.SignIn {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+div.sign-in-button, div.form-container {
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(0, 0, 0);
+}
+
+div.sign-in-button:hover, div.form-container:hover {
+    background-color: rgb(27, 25, 25);
+}
+
+div.sign-in-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    height: 35px;
+    width: 200px;
+}
+
+
+div.SignIn form {
+    position: absolute;
+    top: 50px;
+}
+
+div.SignIn div.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 10px;
+}
+
+div.SignIn button {
+    height: 30px;
+    width: 50%;
+
+    color: black;
+    background-color: white;
+
+    border: none;
+    border-radius: 5px;
+}
+
+div.SignIn button:hover, div.SignIn input:focus {
+    background-color: rgb(224, 231, 238);
+}
+
+div.SignIn h1 {
+    font-size: 20px;
+    color: rgb(115, 23, 23);
+}
