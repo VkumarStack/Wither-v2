@@ -16,5 +16,5 @@ PostModelSchema.virtual("url").get(function () {
 });
 
 module.exports = mongoose.model("Post", PostModelSchema);
-//To call this User in another class use 
+//To call this Post in another class use 
 //const SomeModel = require("/...server/models/post");

@@ -1,12 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET post listing. */
-router.get('/', function(req, res, next) {
-  res.send('Posts home page');
-});
+/* Controller vars */
+const posts_controller = require("../controllers/postsController");
 
-router.get('/:postsID', function(req, res, next) {
-    res.send('Posts home page');
-  });
+//GET specific post
+router.get("/:postID", posts_controller.getPostID);
+
+//GET all posts
+router.get("/", posts_controller.getPosts);
+
+//POST new post 
+router.post("/", posts_controller.createPost);
+
+//PUT like/dislike
+router.put("/:postID", posts_controller.ratePost);
+
 module.exports = router;
