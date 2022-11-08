@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/usersmod');
 
 /* Controller vars */
 const users_controller = require("../controllers/usersController");
@@ -16,5 +17,9 @@ router.get("/dummy", function (req, res) {
 
 router.get("/:userID", users_controller.getUserID);
  // res.send(users_controller.getUserID););
+
+router.post("/", users_controller.createUser);
+
+
 
 module.exports = router;
