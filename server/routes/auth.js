@@ -1,17 +1,32 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/usersmod');
+var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
-router.post('/', function(req, res, next) {
-    // Dummy Implementation
+router.post('/', async function(req, res, next) {
     try {
-        // Future: Compare encrypted password, and if valid, return an authorization token
-        // Also sanitize input data possibly
-        if (req.body.user === "joebruin" && req.body.password === "qwerty")
-            res.json({access: true, token: "123456"});
-        else
+        const user = await User.findOne({a_username: req.body.username.toLowerCase()});
+        if (user === null)
+        {
             res.json({access: false});
+            return;
+        }
+        if (await bcrypt.compare(req.body.password, user.a_password))
+        {
+            const token = jwt.sign({username: req.body.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2h" });
+            console.log(token);
+            res.json({access: true, token: token, user: req.body.username});
+            return;
+        }
+        else
+        {
+            res.json({access: false});
+            return;
+        }
     } catch {
-        res.json({Error: "Something went wrong"});
+        res.json({Error: "Failed to log in"});
+        return;
     }
 });
 
