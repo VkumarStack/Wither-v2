@@ -4,6 +4,7 @@ div.HeaderBar {
     display: flex;
     align-items: center;
     justify-content: center;    
+    gap: 10px;
 }
 
 h1 {
@@ -19,4 +20,18 @@ button {
     width: 20%;
 }
 
+div.Logout .logout-button {
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 200px;
+}
 
+div.Logout .logout-button:hover {
+    background-color: rgb(27, 25, 25);
+}
