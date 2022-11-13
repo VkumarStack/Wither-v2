@@ -18,6 +18,7 @@ router.get("/dummy", function (req, res) {
 router.get("/:userID", users_controller.getUserID);
  // res.send(users_controller.getUserID););
 
+router.post("/", users_controller.encryptPassword);
 router.post("/", users_controller.createUser);
 
 
