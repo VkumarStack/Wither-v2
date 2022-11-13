@@ -1,0 +1,71 @@
+div.Register {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+div.Register .register-button {
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(0, 0, 0);
+}
+
+div.Register .register-button:hover {
+    background-color: rgb(27, 25, 25);
+}
+
+div.Register .register-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    height: 35px;
+    width: 200px;
+}
+
+div.Register form {
+    position: absolute;
+    top: 50px;
+}
+
+div.Register input:focus:invalid {
+    outline: none;
+    border-color:rgb(223, 51, 20);
+    box-shadow: 0 0 5px rgb(223, 51, 20);
+}
+
+div.Register input:focus:valid {
+    outline: none;
+    border-color:rgb(41, 189, 30);
+    box-shadow: 0 0 5px rgb(41, 189, 30);
+}
+
+div.Register div.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 10px;
+}
+
+div.Register button {
+    height: 30px;
+    width: 50%;
+
+    color: black;
+    background-color: white;
+
+    border: none;
+    border-radius: 5px;
+}
+
+div.Register button:hover, div.Register input:focus {
+    background-color: rgb(224, 231, 238);
+}
+
+div.Register h1 {
+    font-size: 20px;
+    color: rgb(115, 23, 23);
+}

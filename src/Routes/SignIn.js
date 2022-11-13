@@ -17,7 +17,7 @@ class SignIn extends React.Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({user: e.target.username.value, password: e.target.password.value})  
+            body: JSON.stringify({username: e.target.username.value, password: e.target.password.value})  
         });
         response = await response.json();
         if (!response.access)
@@ -27,6 +27,7 @@ class SignIn extends React.Component {
         }
         else {
             window.sessionStorage.setItem("token", response.token);
+            window.sessionStorage.setItem("user", response.user);
             window.location.reload(true);
         }
     }
