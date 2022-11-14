@@ -27,7 +27,7 @@ div.create-post-button {
 }
 
 div.CreatePost form {
-    position: absolute;
+    position: flex;
     top: 50px;
     padding: 10px;
     width: 300px;
@@ -36,13 +36,15 @@ div.CreatePost form {
 div.CreatePost div.form-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     gap: 10px;
     
     padding: 10px;
+    height: 200px;
+
 }
 
-div.CreatePost button {
+div.CreatePost button { 
     height: 30px;
     width: 30%;
 
