@@ -1,5 +1,4 @@
 const User = require("../models/usersmod");
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.getUsers = (req, res) => {
@@ -7,9 +6,11 @@ exports.getUsers = (req, res) => {
   };
   
 exports.getUserID = (req, res) => {
-    res.json({ User: req.params.userID, arr: ["1", "2", "3"]});
+    res.json({ username: req.params.userID, arr: ["1", "2", "3"]});
   };
 
+// Split this so that one function checks if the user already exists 
+// and the next adds them to the database
 exports.createUser = async function createUser(req, res) {
   userdetails = {
     a_username: req.body.username.toLowerCase(), 
@@ -32,15 +33,5 @@ exports.createUser = async function createUser(req, res) {
     }
   } catch {
     res.json({Error: "Something went wrong with the Database"});
-  }
-}
-
-exports.encryptPassword = async function encryptPassword(req, res, next) {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
-    next();
-  } catch {
-    res.json({Error: "Something went wrong with registering"});
   }
 }

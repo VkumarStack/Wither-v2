@@ -4,6 +4,7 @@ var User = require('../models/usersmod');
 
 /* Controller vars */
 const users_controller = require("../controllers/usersController");
+const auth_controller = require("../controllers/authenticationController");
 
 /* Controller Requires */
 /* GET users listing. */
@@ -27,11 +28,11 @@ router.get("/dummy", function (req, res) {
 router.get("/:userID", users_controller.getUserID);
 // res.send(users_controller.getUserID););
 
-// We also need a router.post("/:userID") for when the user updates their bio or follows another user
+// We also need a router.put("/:userID") for when the user updates their bio or follows another user
 
 // We need one more function that checks to make sure the registration data is valid (test the username and 
 // password with a Regex expression)
-router.post("/", users_controller.encryptPassword);
+router.post("/", auth_controller.encryptPassword);
 router.post("/", users_controller.createUser);
 
 
