@@ -10,7 +10,8 @@ const UserModelSchema = new Schema({
     a_username: {type: String, required: true},
     a_password: {type: String, required: true},
     a_bio: {type: String, maxLength: 280},
-    a_posts: [{type: Schema.Types.ObjectId, ref: "Postmodel"}],
+    a_posts: [{type: Schema.Types.ObjectId, ref: "Post"}],
+    a_followers: [{type: Schema.Types.ObjectId, ref: "User"}]
 });
 
 UserModelSchema.virtual("url").get(function () {
