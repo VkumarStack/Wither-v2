@@ -14,8 +14,9 @@ exports.createUser = async function createUser(req, res) {
   userdetails = {
     a_username: req.body.username.toLowerCase(), 
     a_password: req.body.password, 
-    a_bio: req.body.bio,
-    a_posts: []
+    a_bio: "Create a Bio",
+    a_posts: [],
+    a_followers: []
   }
   var user = new User(userdetails);
   try {
@@ -27,7 +28,11 @@ exports.createUser = async function createUser(req, res) {
     else {
       await user.save();
       const token = jwt.sign({username: req.body.username}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "2h"});
-      res.json({a_username: userdetails.a_username, a_bio: userdetails.a_bio, a_posts: userdetails.a_posts, token: token});
+      res.json({a_username: userdetails.a_username, 
+                a_bio: userdetails.a_bio,
+                a_posts: userdetails.a_posts, 
+                a_followers: userdetails.a_followers,
+                token: token});
       return;
     }
   } catch {

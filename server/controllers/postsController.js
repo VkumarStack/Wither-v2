@@ -1,24 +1,27 @@
-const postInstance = require("../models/postsmod");
+const Post = require("../models/postsmod");
 
 //Dummy data
 let samplePosts = {
     1: {
       a_text: "Go UCLA!",
       a_username: "Joe Bruin",
-      a_likes: '5',
-      a_dislikes: '0',
+      a_dateCreated: new Date,
+      a_likes: [],
+      a_dislikes: [],
     },
     2: {
         a_text: "Hello World!",
         a_username: "Mr. A",
-        a_likes: '3',
-        a_dislikes: '2',
+        a_dateCreated: Date,
+        a_likes: [],
+        a_dislikes: [],
     },
     3: {
         a_text: "Go USC!",
         a_username: "Trojan",
-        a_likes: '0',
-        a_dislikes: '4',
+        a_dateCreated: Date,
+        a_likes: [],
+        a_dislikes: [],
     },
   };
 
@@ -33,17 +36,31 @@ exports.getPostID = (req, res) => {
   };
 
 //Create new post
-exports.createPost = (req, res) => {
-    const id = 4;
-    const newPost = {
+exports.createPost = async function createPost(req, res) {
+  current_Date = Date();
+    postdetails = {
       a_text: req.body.text,
       a_username: "DUMMY",
-      a_likes: '0',
-      a_dislikes: '0',
+      a_dateCreated: current_Date,
+      a_likes: [],
+      a_dislikes: [],
     }
-    samplePosts[id];
-    res.json(newPost);
-  };
+
+    const newPost = new Post(postdetails);
+    try{
+      await newPost.save();
+      res.json({
+        a_text: postdetails.a_text, 
+        a_username: postdetails.a_username,
+        a_dateCreated: postdetails.a_dateCreated, 
+        a_likes: postdetails.a_likes,
+        a_dislikes: postdetails.a_dislikes
+      });
+      return;
+    } catch{
+      res.json({Error: "Something went wrong with creating your post"});
+    }
+  }
 
 //Like or Dislike post
 exports.ratePost = (req, res) => {
