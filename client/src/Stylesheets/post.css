@@ -8,7 +8,7 @@ a {
 }
 
 a:hover {
-    color: white;
+    color: rgb(79, 56, 56);
 }
 
 .Post {
@@ -38,5 +38,5 @@ a:hover {
 }
 
 .like-info svg:hover, .dislike-info svg:hover {
-    color: white;
+    color: rgb(79, 56, 56);
 }

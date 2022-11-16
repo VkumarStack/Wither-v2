@@ -4,11 +4,15 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+// To Do: Change likes and dislikes to be arrays of ObjectIds of 
+// users and also add a date field (for the date when the post was 
+// created)
 const PostModelSchema = new Schema({
-    a_text: {type: String, required: true, maxLength: 100},
+    a_text: {type: String, required: true, minLength: 1, maxLength: 280},
     a_username:{type: String, required: true},
-    a_likes: {type: Number},
-    a_dislikes: {type: Number}
+    a_dateCreated: {type: String, required: true},
+    a_likes: [{type: Schema.Types.ObjectId, ref: "User"}],
+    a_dislikes: [{type: Schema.Types.ObjectId, ref: "User"}]
 });
 
 PostModelSchema.virtual("url").get(function () {
