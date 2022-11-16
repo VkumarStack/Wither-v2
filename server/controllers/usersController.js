@@ -1,14 +1,87 @@
 const User = require("../models/usersmod");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+//const { db } = require("../models/usersmod");
 
-exports.getUsers = (req, res) => {
-    res.send("NOT IMPLEMENTED: Users list");
-  };
+const MongoClient = require("mongodb").MongoClient;
+const client = new MongoClient("mongodb+srv://CS35L:d4aoCo7ZFcnkvcG1@cluster0.avwb5ku.mongodb.net/?retryWrites=true&w=majority");
+
+exports.getUsers = async function getUsers(req, res) {
+  try{
+    const database = client.db("test");
+    users = database.collection("users");
+    const cursor = users.find();
+
+    if(await cursor.count() === 0){
+      console.log("No users found");
+    }
+
+    const data = await users.find({}).toArray();
+
+    await cursor.forEach(console.dir);
+    res.json(data);
+  }
+  catch{
+    await console.log("error in finding users");
+  }
+
+}
+
+exports.idFromUsername = async function idFromUsername(req, res){
+  try{
+    const database = client.db("test");
+    users = database.collection("users");
+
+    const field = "_id";
+    const query = {a_username: req.body.username.toLowerCase()};
+
+    const id = await users.distinct(field, query);
+
+    res.json(id);
+  }
+  catch{
+    await console.log("User not found");
+    res.json("User not found")
+  }
+}
+
+  exports.userExists = async function userExists(req, res){
+    try{
+      const database = client.db("test");
+      users = database.collection("users");
   
-exports.getUserID = (req, res) => {
-    res.json({ User: req.params.userID, arr: ["1", "2", "3"]});
-  };
+      const query = {a_username: req.body.username.toLowerCase()};
+  
+      const user = await users.findOne(query);
+      console.log(user);
+      res.json(user);
+      return true;
+    }
+    catch{
+      await console.log("User not found");
+      res.json("User not found")
+      return false;
+    }
+  }
+
+  exports.getUserID = async function getUserID(req, res){
+    try{
+      const database = client.db("test");
+      users = database.collection("users");
+  
+      const query = {a_username: req.body.username.toLowerCase()};
+  
+      const user = await users.findOne(query, {projection:{a_password: 0}});
+      console.log(user);
+      res.json(user);
+      return true;
+    }
+    catch{
+      await console.log("User not found");
+      res.json("User not found")
+      return false;
+    }
+  }
 
 exports.createUser = async function createUser(req, res) {
   userdetails = {
