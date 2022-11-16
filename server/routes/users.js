@@ -11,9 +11,7 @@ const auth_controller = require("../controllers/authenticationController");
 // To Do: Add a function that gets every single User object from the database and returns it 
 // in a JSON array of just their names - i.e. {users: ["Joebruin", "testUser123"]} 
 // If there are no users, the array should just be empty
-router.get('/', function(req, res, next) {
-  res.json({userlist: ["joebruin123", "penguinz0", "ludwig"]});
-});
+router.get('/', users_controller.getUsers);
 
 // Delete this
 router.get("/dummy", function (req, res) {
