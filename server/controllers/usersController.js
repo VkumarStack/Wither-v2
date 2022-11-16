@@ -53,6 +53,13 @@ exports.idFromUsername = async function idFromUsername(req, res){
       const query = {a_username: req.body.username.toLowerCase()};
   
       const user = await users.findOne(query);
+
+      if(user === null)
+    {
+      res.json({Error: "User doesn't exist"});
+      return;
+    }
+
       console.log(user);
       res.json(user);
       return true;
@@ -96,20 +103,6 @@ exports.getUsers = async (req, res) => {
   }
 };
   
-exports.getUserID = async (req, res) => {
-  try {
-    const resp = await User.findOne({a_username: req.params.userID}).select("-a_password");
-    if(resp === null)
-    {
-      res.json({Error: "User doesn't exist"});
-      return;
-    }
-    res.json({ user: resp});
-  }
-  catch {
-    res.send({Error: "Could not fetch specific user"});
-  }
-};
 
 // Split this so that one function checks if the user already exists 
 // and the next adds them to the database
