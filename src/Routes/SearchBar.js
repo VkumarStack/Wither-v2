@@ -13,7 +13,7 @@ class SearchBar extends React.Component {
     componentDidMount() {
         fetch('http://localhost:8080/users')
             .then((response) => response.json()) 
-            .then((data) => this.setState({ users: data.userlist}));
+            .then((data) => this.setState({ users: data.users}));
     }
 
     matchUsers(expression) {
@@ -21,10 +21,10 @@ class SearchBar extends React.Component {
         {
             fetch('http://localhost:8080/users')
             .then((response) => response.json()) 
-            .then((data) => this.setState({ users: data.userlist}));
+            .then((data) => this.setState({ users: data.users}));
             return;
         }
-        if (this.state.input === null)
+        if (this.state.input === null || this.state.input === "")
             return;
         let matches = []
         this.state.users.forEach(user => {
@@ -37,7 +37,7 @@ class SearchBar extends React.Component {
     render() {
         return (
             <div className="SearchBar">
-                <input type="text" placeholder="Search Wither for a user" onChange={(e) => this.setState({input: e.target.value})}/>
+                <input type="text" placeholder="Search Wither for a user" onChange={(e) => {this.setState({input: e.target.value})}}/>
                 {this.matchUsers(this.state.input)}
             </div>
         );

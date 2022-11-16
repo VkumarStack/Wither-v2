@@ -38,22 +38,39 @@ class Profile extends React.Component {
         };
     }
     render() {
-        return (
-            <div className="Profile">
-                <HeaderBar></HeaderBar>
-                <div className='rowC' /* left column for user info, right column for posts */>
-                    <div>
-                        <UserInfo userinfo ={{id: 111, user: "Joe Bruin", username: "@joebruin", bio: "official mascot of UCLA | boyfriend of @josiebruin"}}/>
-                    </div>
-                    <div className="posts">
-                        <CreatePost></CreatePost>
-                        <Post post={{id: 111, user: "Joe Bruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "Joe Bruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "Joe Bruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+        if (sessionStorage.getItem("token") === null)
+            return (
+                <div className="Profile">
+                    <HeaderBar></HeaderBar>
+                    <div className='rowC' /* left column for user info, right column for posts */>
+                        <div>
+                            <UserInfo userinfo = /* TODO GET info based on user ID */ {{id: 111, user: "Joe Bruin", username: "@joebruin", bio: "official mascot of UCLA | boyfriend of @josiebruin"}}/>
+                        </div>
+                        <div className="posts">
+                            <Post post=/* TODO GET posts based on user ID */{{id: 111, user: "Joe Bruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                            <Post post={{id: 111, user: "Joe Bruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                            <Post post={{id: 111, user: "Joe Bruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        else
+            return (
+                <div className="Profile">
+                    <HeaderBar></HeaderBar>
+                    <div className='rowC' /* left column for user info, right column for posts */>
+                        <div>
+                            <UserInfo userinfo = /* TODO GET info based on user ID */ {{id: 111, user: "Joe Bruin", username: "@joebruin", bio: "official mascot of UCLA | boyfriend of @josiebruin"}}/>
+                        </div>
+                        <div className="posts">
+                            <CreatePost></CreatePost>
+                            <Post post=/* TODO GET posts based on user ID */{{id: 111, user: "Joe Bruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                            <Post post={{id: 111, user: "Joe Bruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                            <Post post={{id: 111, user: "Joe Bruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        </div>
+                    </div>
+                </div>
+            )
     }
 }
 
