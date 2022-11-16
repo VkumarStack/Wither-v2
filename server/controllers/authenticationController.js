@@ -22,8 +22,7 @@ exports.logIn = async function logIn(req, res, next) {
         }
         if (await bcrypt.compare(req.body.password, user.a_password))
         {
-            const token = jwt.sign({username: req.body.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2h" });
-            console.log(token);
+            const token = exports.createToken(req.body.username);
             res.json({access: true, token: token, user: req.body.username});
             return;
         }
@@ -38,9 +37,12 @@ exports.logIn = async function logIn(req, res, next) {
     }
 }
 
-// Copy and Paste implementation from createPost later
-exports.createToken = async function createToken(req, res, next) {
+exports.testFunction = function() {
+    return "Test";
+}
 
+exports.createToken = (user) => {
+    return jwt.sign({username: user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "2h"});
 }
 
 exports.compareToken = async function compareToken(req, res, next) {
