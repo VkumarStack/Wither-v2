@@ -14,11 +14,7 @@ const auth_controller = require("../controllers/authenticationController");
 //Done in getAllUsers
 
 //Reutrns an array of all users in the data base and thier properties
-router.get("/getAllUsers", users_controller.getUsers);
-//If a user exists returns that users properties
-router.get("/userExists", users_controller.userExists);
-//If a user exists returns their ID
-router.get("/IdFromUsername", users_controller.idFromUsername);
+router.get("/", users_controller.getUsers);
 
 // The getUserID should take the parameter from the URL and then search in the database for the 
 // user that matches it and return all of the information of the user from the User Model EXCEPT
