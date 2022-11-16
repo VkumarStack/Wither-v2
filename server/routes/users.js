@@ -11,15 +11,7 @@ const auth_controller = require("../controllers/authenticationController");
 // To Do: Add a function that gets every single User object from the database and returns it 
 // in a JSON array of just their names - i.e. {users: ["Joebruin", "testUser123"]} 
 // If there are no users, the array should just be empty
-<<<<<<< HEAD
-
 //Done in getAllUsers
-router.get('/', function(req, res, next) {
-  res.json({userlist: ["joebruin123", "penguinz0", "ludwig"]});
-});
-=======
-router.get('/', users_controller.getUsers);
->>>>>>> 1336cd33e3b512a24a3ee6d33e339665dc5b35fd
 
 //Reutrns an array of all users in the data base and thier properties
 router.get("/getAllUsers", users_controller.getUsers);

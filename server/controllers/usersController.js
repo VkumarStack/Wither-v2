@@ -1,5 +1,4 @@
 const User = require("../models/usersmod");
-<<<<<<< HEAD
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 //const { db } = require("../models/usersmod");
@@ -83,7 +82,6 @@ exports.idFromUsername = async function idFromUsername(req, res){
       return false;
     }
   }
-=======
 const Authentication = require("../controllers/authenticationController");
 
 exports.getUsers = async (req, res) => {
@@ -112,7 +110,6 @@ exports.getUserID = async (req, res) => {
     res.send({Error: "Could not fetch specific user"});
   }
 };
->>>>>>> 1336cd33e3b512a24a3ee6d33e339665dc5b35fd
 
 // Split this so that one function checks if the user already exists 
 // and the next adds them to the database
