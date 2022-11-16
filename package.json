@@ -1,5 +1,23 @@
 {
-  "dependencies": {
-    "async": "^3.2.4"
-  }
+  "name": "wither",
+  "version": "1.0.0",
+  "description": "CS35L Group Project\r Eggert",
+  "main": "./server/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "updateDependencies": "cd client && npm install && cd ../server && npm install",
+    "startClient": "cd client && npm start",
+    "startServer": "cd server && npm run devstart",
+    "start": "start npm run startServer && start npm run startClient"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VkumarStack/Wither.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VkumarStack/Wither/issues"
+  },
+  "homepage": "https://github.com/VkumarStack/Wither#readme"
 }
