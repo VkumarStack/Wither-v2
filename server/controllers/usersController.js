@@ -1,5 +1,6 @@
 const User = require("../models/usersmod");
 const Authentication = require("../controllers/authenticationController");
+const { request } = require("express");
 
 exports.idFromUsername = async function idFromUsername(username){
   try{
@@ -61,6 +62,7 @@ exports.getUsers = async (req, res) => {
     res.send({Error: "Could not fetch all users"});
   }
 };
+
 //Following a user
 
 exports.followUser = async (req, res) => {
@@ -97,6 +99,37 @@ catch
 
 }
 
+//Edit bio
+exports.validateBio = async(req, res, next) => {
+
+  if(req.body.bio.length > 250)
+  {
+    res.json({Error: "Inputted bio length is too long"});
+    return;
+  }
+  next();
+
+}
+exports.editBio = async (req, res) => {
+  let user = await exports.userExists(req.params.userID);
+
+  if(user === false)
+  {
+    res.json({Error: "User doesn't exist to edit bio"});
+    return;
+  }
+
+  try {
+    user.a_bio = req.body.bio;
+    user.save();
+    res.json({bio: user.a_bio});
+      }
+  catch
+  {
+    res.json({Error: "Bio failed to update"});
+  }
+
+}
   
 
 // Split this so that one function checks if the user already exists 
