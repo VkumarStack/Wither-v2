@@ -61,6 +61,42 @@ exports.getUsers = async (req, res) => {
     res.send({Error: "Could not fetch all users"});
   }
 };
+//Following a user
+
+exports.followUser = async (req, res) => {
+
+   const userFollowing = await exports.userExists(req.body.username);
+   let userFollowed = await exports.userExists(req.params.userID);
+   try
+   {
+  if(userFollowing !== false && userFollowed !== false)
+  {
+    
+    let n = userFollowed.a_followers.indexOf(userFollowing.a_username);
+    console.log(n);
+    if(n >= 0)
+    {
+      console.log("test");
+      userFollowed.a_followers.splice(n, 1);
+    }
+    else
+    {
+      userFollowed.a_followers.push(userFollowing.a_username);
+    }
+    await userFollowed.save();
+    res.json({ followed_List: userFollowed.a_followers });
+  }
+  else
+    res.json({Error: "User doesn't exist"});
+  
+}
+catch
+{
+  res.json({Error: "Could not follow/unfollow user"});
+}
+
+}
+
   
 
 // Split this so that one function checks if the user already exists 
