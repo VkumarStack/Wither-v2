@@ -27,7 +27,10 @@ router.get("/:userID", users_controller.getUserID);
 
 // We also need a router.put("/:userID") for when the user updates their bio or follows another user
 
+
 router.put("/:userID/follow", users_controller.followUser);
+router.put("/:userID/bio", users_controller.validateBio);
+router.put("/:userID/bio", users_controller.editBio);
 // We need one more function that checks to make sure the registration data is valid (test the username and 
 // password with a Regex expression)
 router.post("/", auth_controller.encryptPassword);
