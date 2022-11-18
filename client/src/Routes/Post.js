@@ -29,7 +29,7 @@ class Post extends React.Component {
         return (
             <div className="Post">
                 <a href={window.location.origin + "/users/" + this.state.user}>
-                    <h1> {this.state.user} </h1>
+                    <h2> @{this.state.user} </h2>
                 </a>
                 <p> {this.state.text} </p>
                 <div className="likes-dislikes">

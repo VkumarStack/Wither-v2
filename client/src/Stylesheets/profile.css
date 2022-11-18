@@ -10,19 +10,8 @@ html, body, #root, .Profile {
     background-color: rgb(29, 161, 242);
 }
 
-.UserInfo {
-    margin: 5px;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 10px;
-    border-radius: 25px;
-    background-color: rgb(245, 248, 250);
-}
-
 .rowC {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }

@@ -22,10 +22,26 @@ class HeaderBar extends React.Component {
                 <div className="HeaderBar">
                     <h1><a href={window.location.origin}> Wither </a></h1>
                     <SearchBar/>
+                    <YourProfile/>
                     <Logout/>
                 </div>
             )
     }
+}
+
+// TODO: hide profile button when user is on their profile page
+function YourProfile(props) {
+    let user = sessionStorage.getItem("user")
+    return (
+        <div className="YourProfile">
+            <div className="profile-button"
+            onClick={() => {
+                window.location.replace(`/users/${user}`);
+            }}>
+                Profile       
+            </div>
+        </div>
+    );
 }
 
 function Logout(props) {
