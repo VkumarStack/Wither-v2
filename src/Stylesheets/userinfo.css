@@ -1,0 +1,14 @@
+.UserInfo {
+    margin: 5px;
+    height: 400px;
+    min-width: 300px;
+    max-width: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+
+    border-radius: 25px;
+    background-color: rgb(245, 248, 250);
+}
