@@ -32,6 +32,19 @@ class Profile extends React.Component {
             <div className="Profile">
                 <HeaderBar></HeaderBar>
                 {chooseRender(loggedIn, theirProfile)}
+                
+                <div className='rowC' /* temporary, delete when chooseRender works */>
+                    <div>
+                        <UserInfo userinfo={{bio: "test bio"}} />
+                        <EditBio></EditBio>
+                    </div>
+                    <div className="posts"/* TODO: GET posts based on user ID */>
+                        <CreatePost></CreatePost>
+                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                    </div>
+                </div>
             </div>
         )
     }
