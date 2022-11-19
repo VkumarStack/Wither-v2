@@ -58,6 +58,17 @@ exports.createPost = async function createPost(req, res) {
       a_dislikes: [],
     }
 
+    //check length of text
+    if (req.body.text.length > 280) {
+      res.json({Error: "Text too long"})
+      return;
+    }
+
+    if (!(await User.userExists(req.body.username.toLowerCase()))) {
+      res.json({Error: "User does not exist"})
+      return;
+    }
+
     const newPost = new Post(postdetails);
     try{
       await newPost.save();
