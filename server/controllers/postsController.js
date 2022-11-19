@@ -39,8 +39,20 @@ exports.getPosts = async (req, res) => {
   };
   
 //Get specific post
-exports.getPostID = (req, res) => {
-    res.json(samplePosts[req.params.postID]);
+exports.getPostID = async function getPostID(req, res) {
+    try{
+      const query = {_id: req.params.postID};
+      const post = await Post.findOne(query);
+      if (post === null)
+      {
+        res.json({Error: "Post not found"});
+        return;
+      }
+      res.json(post);
+    }
+    catch{
+      res.json({Error: "Database error"})
+    }
   };
 
 //Create new post
