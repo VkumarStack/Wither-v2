@@ -1,4 +1,5 @@
 const Post = require("../models/postsmod");
+const User = require("../controllers/usersController");
 
 exports.postExists = async function postExists(postID){
   try{
@@ -52,7 +53,7 @@ exports.createPost = async function createPost(req, res) {
   current_Date = Date();
     postdetails = {
       a_text: req.body.text,
-      a_username: "DUMMY",
+      a_username: req.body.username,
       a_dateCreated: current_Date,
       a_likes: [],
       a_dislikes: [],
@@ -86,6 +87,50 @@ exports.createPost = async function createPost(req, res) {
   }
 
 //Like or Dislike post
-exports.ratePost = (req, res) => {
-    res.json({ Post: req.params.postID, rate: "Like/Dislike"});
+exports.ratePost = async (req, res) => {
+    if (!(await User.userExists(req.body.username.toLowerCase()))) {
+      res.json({Error: "User does not exist"})
+      return;
+    }
+
+    //Check if post exists
+    if (!(await exports.postExists(req.params.postID))) {
+      res.json({Error: "Post does not exist"})
+      return;
+    }
+
+    if (req.body.boolean)
+    {
+      const post = await Post.findOne({_id: req.params.postID});
+      const user = await User.findOne({a_username: req.body.username});
+      let index = post.a_likes.indexOf(user._id);
+      if (index !== -1)
+      {
+        //remove user from list of likes
+        post.a_likes.splice(index, 1);
+      }
+      else
+      {
+        //add user to list of likes
+        post.a_likes.push(user._id);
+      }
+    }
+    else
+    {
+      const post = await Post.findOne({_id: req.params.postID});
+      const user = await User.findOne({a_username: req.body.username});
+      let index = post.a_dislikes.indexOf(user._id);
+      if (index !== -1)
+      {
+        //remove user from list of dislikes
+        post.a_dislikes.splice(index, 1);
+      }
+      else
+      {
+        //add user to list of dislikes
+        post.a_dislikes.push(user._id);
+      }
+    }
+
+    Post.save();
   };
