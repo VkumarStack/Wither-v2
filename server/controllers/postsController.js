@@ -50,6 +50,13 @@ exports.getPostID = async function getPostID(req, res) {
 
 //Create new post
 exports.createPost = async function createPost(req, res) {
+  let user = await user_controller.userExists(req.body.user);
+  if ( user === false)
+  {
+    res.json({Error: "User creating post does not exist"});
+    return;
+  }
+
   current_Date = Date();
     postdetails = {
       a_text: req.body.text,
@@ -73,13 +80,10 @@ exports.createPost = async function createPost(req, res) {
     const newPost = new Post(postdetails);
     try{
       await newPost.save();
-      res.json({
-        a_text: postdetails.a_text, 
-        a_username: postdetails.a_username,
-        a_dateCreated: postdetails.a_dateCreated, 
-        a_likes: postdetails.a_likes,
-        a_dislikes: postdetails.a_dislikes
-      });
+      console.log(newPost)
+      user.a_posts.push(newPost._id);
+      await user.save();
+      res.json(newPost);
       return;
     } catch{
       res.json({Error: "Something went wrong with creating your post"});

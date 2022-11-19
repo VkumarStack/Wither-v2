@@ -1,7 +1,7 @@
 import React from "react";
-import '../Stylesheets/createpost.css';
+import '../Stylesheets/editbio.css';
 
-class CreatePost extends React.Component {
+class EditBio extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,15 +11,16 @@ class CreatePost extends React.Component {
         };
     }
 
-    // TODO: posting error, get user?
     async handleSubmit(e) {
+        if (this.state.user === null)
+            return;
         e.preventDefault();
-        let response = await fetch("http://localhost:8080/posts/", {
-            method: "POST",
+        let response = await fetch(`http://localhost:8080/users/${this.state.user}/bio`, {
+            method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username: this.state.user, text: e.target.text.value})
+            body: JSON.stringify({user: this.state.user, bio: e.target.bio.value})
         })
         response = await response.json();
         if (response.Error)
@@ -30,12 +31,14 @@ class CreatePost extends React.Component {
         }
         else
         {
-            window.location.reload(true);
+            // This is altering the parent component's (Profile) state, which causes it to re-render the UserInfo 
+            // component with the new bio
+            this.props.changeBio(response.bio);
         }
     }
 
     textOnInvalid(e) {
-        e.target.setCustomValidity("Post must be 1 to 280 characters in length");
+        e.target.setCustomValidity("Bio must be 0 to 250 characters in length");
     }
 
     textOnChange(e) {
@@ -44,25 +47,24 @@ class CreatePost extends React.Component {
 
     render() {
         return (
-            <div className="CreatePost">
-                <div className="create-post-button" onClick={() => this.setState({show: !this.state.show})}> Create Post </div>
+            <div className="EditBio">
+                <div className="edit-bio-button" onClick={() => this.setState({show: !this.state.show})}> Edit Bio </div>
                 { this.state.show && 
                     <form onSubmit={ (e) => { this.handleSubmit(e) } }>
                         <div className="form-container">
                             <div className="form-pair">
                                 <label htmlFor="Post"></label>
                                 <textarea
-                                    placeholder="What's happening?" 
-                                    id="Text" 
-                                    name="text"
-                                    minLength="1"
-                                    maxLength="280"
+                                    placeholder="Add/edit a bio to your profile" 
+                                    id="Bio" 
+                                    name="bio"
+                                    maxLength="250"
                                     onInvalid={this.textOnInvalid}
                                     onChange={this.textOnChange}
                                     required
                                 />
                             </div>
-                            <button type="send"> Send</button>
+                            <button type="send"> Update</button>
                             {   (this.state.errorMessage !== null) &&
                                     <h1> {this.state.errorMessage} </h1>
                             }
@@ -73,4 +75,4 @@ class CreatePost extends React.Component {
         );
     }
 }
-export default CreatePost;
+export default EditBio;
