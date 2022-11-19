@@ -26,8 +26,16 @@ let samplePosts = {
   };
 
 //List all posts
-exports.getPosts = (req, res) => {
-    res.json(samplePosts);
+exports.getPosts = async (req, res) => {
+    try{
+      const response = await Post.find();
+      let test = [];
+      response.forEach(element => test.push(element._id));
+      res.send({posts: test});
+    }
+    catch {
+      res.send({Error: "Could not fetch all posts"});
+    }
   };
   
 //Get specific post
