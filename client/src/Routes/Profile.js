@@ -24,9 +24,10 @@ class Profile extends React.Component {
 
     componentDidMount() {
         // fetch defaults to a GET request, so no need to specify any other parameters
-        fetch(`http://localhost:8080/users/${this.state.user}`)
+        fetch(`http://localhost:8080/users/${this.state.current}`)
         .then((response) => response.json())
         .then((data) => {
+            console.log(data);
             if (!data.Error)
                 this.setState({bio: data.a_bio, followers: data.a_followers});
         })
