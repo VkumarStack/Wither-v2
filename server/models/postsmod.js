@@ -11,8 +11,8 @@ const PostModelSchema = new Schema({
     a_text: {type: String, required: true, minLength: 1, maxLength: 280},
     a_username:{type: String, required: true},
     a_dateCreated: {type: String, required: true},
-    a_likes: [{type: Schema.Types.ObjectId, ref: "User"}],
-    a_dislikes: [{type: Schema.Types.ObjectId, ref: "User"}]
+    a_likes: [{type: String}],
+    a_dislikes: [{type: String}]
 });
 
 PostModelSchema.virtual("url").get(function () {

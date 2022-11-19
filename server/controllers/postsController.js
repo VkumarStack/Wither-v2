@@ -50,7 +50,7 @@ exports.getPostID = async function getPostID(req, res) {
 
 //Create new post
 exports.createPost = async function createPost(req, res) {
-  let user = await user_controller.userExists(req.body.user);
+  let user = await User.userExists(req.body.username);
   if ( user === false)
   {
     res.json({Error: "User creating post does not exist"});
@@ -92,22 +92,21 @@ exports.createPost = async function createPost(req, res) {
 
 //Like or Dislike post
 exports.ratePost = async (req, res) => {
-    if (!(await User.userExists(req.body.username.toLowerCase()))) {
+    let user = await User.userExists(req.body.username.toLowerCase());
+    if (!user) {
       res.json({Error: "User does not exist"})
       return;
     }
 
+    let post = await exports.postExists(req.params.postID);
     //Check if post exists
-    if (!(await exports.postExists(req.params.postID))) {
+    if (!post) {
       res.json({Error: "Post does not exist"})
       return;
     }
-
-    if (req.body.boolean)
+    if (req.body.boolean.toLowerCase() === "true")
     {
-      const post = await Post.findOne({_id: req.params.postID});
-      const user = await User.findOne({a_username: req.body.username});
-      let index = post.a_likes.indexOf(user._id);
+      let index = post.a_likes.indexOf(user.a_username);
       if (index !== -1)
       {
         //remove user from list of likes
@@ -116,14 +115,12 @@ exports.ratePost = async (req, res) => {
       else
       {
         //add user to list of likes
-        post.a_likes.push(user._id);
+        post.a_likes.push(user.a_username);
       }
     }
     else
     {
-      const post = await Post.findOne({_id: req.params.postID});
-      const user = await User.findOne({a_username: req.body.username});
-      let index = post.a_dislikes.indexOf(user._id);
+      let index = post.a_dislikes.indexOf(user.a_username);
       if (index !== -1)
       {
         //remove user from list of dislikes
@@ -132,9 +129,17 @@ exports.ratePost = async (req, res) => {
       else
       {
         //add user to list of dislikes
-        post.a_dislikes.push(user._id);
+        post.a_dislikes.push(user.a_username);
       }
     }
 
-    Post.save();
+    post.save();
+    // Check if the post should be deleted if:
+    // There's a minimum of 5 dislikes and the number of dislikes >= 2 * number of likes
+    // Check the user.a_posts for the current post and remove it from that list 
+    // Make sure to save user (user.save()) 
+    // And then delete the post (deleteOne({ _id })) 
+    // and do  post.save() to confirm that its being deleted
+    // Return in res { Deleted: true}
+    res.json({likes: post.a_likes, dislikes: post.a_dislikes});
   };
