@@ -7,17 +7,16 @@ class UserInfo extends React.Component {
         super(props);
         this.state = {
             user: window.location.pathname.split("/").pop(),
-            bio: this.props.userinfo.bio,
-        };
+        }
     }
 
-    /* TODO: get bio from backend */
+    /* TODO: Include a follower count (just display the length of this.props.userinfo.a_followers) */
     render() {
         return (
             <div className="UserInfo">
                 <h1> @{this.state.user}</h1>
                 <h2></h2>
-                <p> {this.state.bio} </p>
+                <p> {this.props.bio} </p>
             </div>
         );
     }

@@ -11,10 +11,11 @@ class EditBio extends React.Component {
         };
     }
 
-    // TODO: posting error, get user?
     async handleSubmit(e) {
+        if (this.state.user === null)
+            return;
         e.preventDefault();
-        let response = await fetch(`http://localhost:8080/users/${this.props.user}/bio`, {
+        let response = await fetch(`http://localhost:8080/users/${this.state.user}/bio`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -30,7 +31,9 @@ class EditBio extends React.Component {
         }
         else
         {
-            window.location.reload(true);
+            // This is altering the parent component's (Profile) state, which causes it to re-render the UserInfo 
+            // component with the new bio
+            this.props.changeBio(response.bio);
         }
     }
 

@@ -14,7 +14,26 @@ class Profile extends React.Component {
         this.state = {
             user: sessionStorage.getItem("user"),
             current: window.location.pathname.split("/").pop(),
+            bio: "",
+            followers: 0
+
+            // Fetch the database at the top-level and pass into EditBio and UserInfo as props
+            // userinfo contains bio, followers, posts, and username
         };
+    }
+
+    componentDidMount() {
+        // fetch defaults to a GET request, so no need to specify any other parameters
+        fetch(`http://localhost:8080/users/${this.state.user}`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (!data.Error)
+                this.setState({bio: data.a_bio, followers: data.a_followers});
+        })
+    } 
+
+    changeBio(newBio) {
+        this.setState({bio: newBio});
     }
 
     render() {
@@ -27,16 +46,57 @@ class Profile extends React.Component {
                 theirProfile = true;
             }
         }
-
         return (
             <div className="Profile">
                 <HeaderBar></HeaderBar>
-                {chooseRender(loggedIn, theirProfile)}
-                
-                <div className='rowC' /* temporary, delete when chooseRender works */>
+                {this.chooseRender(loggedIn, theirProfile)}
+            </div>
+        )
+    }
+
+    chooseRender(loggedIn, theirProfile) {
+        const key = `${loggedIn}-${theirProfile}`
+        if (key === "false-false")
+        {
+            return (
+                <div className='rowC'>
                     <div>
-                        <UserInfo userinfo={{bio: "test bio"}} />
-                        <EditBio></EditBio>
+                        <UserInfo bio={this.state.bio} followers={this.state.followers}/>
+                    </div>
+                    <div className="posts"/* TODO: GET posts based on user ID */>
+                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                    </div>
+                </div>
+            )
+        }
+        else if (key === "true-false")
+        {
+            return (
+                <div className='rowC'>
+                    <div>
+                        <div /* TODO: add follow button */></div>
+                        <UserInfo bio={this.state.bio} followers={this.state.followers}/>
+                    </div>
+                    <div className="posts"/* TODO: GET posts based on user ID */>
+                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                    </div>
+                </div>
+            )
+        }
+        else if (key === "true-true")
+        {
+            return (
+                <div className='rowC'>
+                    <div>
+                        <UserInfo bio={this.state.bio} followers={this.state.followers}/>
+                        {/* The changeBio function is being passed to the EditBio component, but is being bound
+                        to this component  (Profile) - so when changeBio() references "this" in its function, it will refer 
+                        to the Profile component's state and not the Edit component's state*/}
+                        <EditBio changeBio={this.changeBio.bind(this)}/>
                     </div>
                     <div className="posts"/* TODO: GET posts based on user ID */>
                         <CreatePost></CreatePost>
@@ -45,73 +105,11 @@ class Profile extends React.Component {
                         <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        else 
+            return null;
     }
-}
-
-// TODO: chooseRender not displaying any page :(
-
-function chooseRender({ loggedIn, theirProfile }) {
-    const key = `${loggedIn}-${theirProfile}`
-    return (
-        <div>
-            {{
-                'false-true': null,         // can't be their profile if not logged in
-                'false-false': <Page1/>,    // view only
-                'true-false': <Page2/>,     // view, follow
-                'true-true': <Page3/>,      // view, create post, edit bio
-            }[key]}
-        </div>
-    )
-}
-
-function Page1() { // view only
-    return (
-        <div className='rowC'>
-            <div>
-                <UserInfo userinfo={{bio: "test bio"}} />
-            </div>
-            <div className="posts"/* TODO: GET posts based on user ID */>
-                <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-            </div>
-        </div>
-    )
-}
-
-function Page2() { // view, follow 
-    return (
-        <div className='rowC'>
-            <div>
-                <div /* TODO: add follow button */></div>
-                <UserInfo userinfo={{bio: "test bio"}} />
-            </div>
-            <div className="posts"/* TODO: GET posts based on user ID */>
-                <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-            </div>
-        </div>
-    )
-}
-
-function Page3() { // view, create post, edit bio
-    return (
-        <div className='rowC'>
-            <div>
-                <UserInfo userinfo={{bio: "test bio"}} />
-                <EditBio></EditBio>
-            </div>
-            <div className="posts"/* TODO: GET posts based on user ID */>
-                <CreatePost></CreatePost>
-                <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-            </div>
-        </div>
-    )
 }
 
 export default Profile;
