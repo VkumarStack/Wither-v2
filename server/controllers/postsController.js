@@ -1,29 +1,21 @@
 const Post = require("../models/postsmod");
 
-//Dummy data
-let samplePosts = {
-    1: {
-      a_text: "Go UCLA!",
-      a_username: "Joe Bruin",
-      a_dateCreated: new Date,
-      a_likes: [],
-      a_dislikes: [],
-    },
-    2: {
-        a_text: "Hello World!",
-        a_username: "Mr. A",
-        a_dateCreated: Date,
-        a_likes: [],
-        a_dislikes: [],
-    },
-    3: {
-        a_text: "Go USC!",
-        a_username: "Trojan",
-        a_dateCreated: Date,
-        a_likes: [],
-        a_dislikes: [],
-    },
-  };
+exports.postExists = async function postExists(postID){
+  try{
+    const query = {_id: postID};
+
+    const post = await Post.findOne(query);
+
+    if(post === null)
+      return false;
+
+    return post;
+  }
+  catch {
+    console.log("Database error");
+    return false;
+  }
+}
 
 //List all posts
 exports.getPosts = async (req, res) => {
