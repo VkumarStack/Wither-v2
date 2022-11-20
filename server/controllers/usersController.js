@@ -66,60 +66,57 @@ exports.getUsers = async (req, res) => {
 //Following a user
 
 exports.followUser = async (req, res) => {
-
-   const userFollowing = await exports.userExists(req.body.username);
-   let userFollowed = await exports.userExists(req.params.userID);
    try
    {
-  if(userFollowing !== false && userFollowed !== false)
-  {
-    
-    let n = userFollowed.a_followers.indexOf(userFollowing.a_username);
-    console.log(n);
-    if(n >= 0)
+    const userFollowing = await exports.userExists(req.body.username);
+    let userFollowed = await exports.userExists(req.params.userID);
+    if(userFollowing !== false && userFollowed !== false)
     {
-      console.log("test");
-      userFollowed.a_followers.splice(n, 1);
+      let n = userFollowed.a_followers.indexOf(userFollowing.a_username);
+      console.log(n);
+      if(n >= 0)
+      {
+        console.log("test");
+        userFollowed.a_followers.splice(n, 1);
+      }
+      else
+      {
+        userFollowed.a_followers.push(userFollowing.a_username);
+      }
+      await userFollowed.save();
+      res.json({ followed_List: userFollowed.a_followers });
     }
     else
-    {
-      userFollowed.a_followers.push(userFollowing.a_username);
-    }
-    await userFollowed.save();
-    res.json({ followed_List: userFollowed.a_followers });
+      res.json({Error: "User doesn't exist"}); 
   }
-  else
-    res.json({Error: "User doesn't exist"});
-  
-}
-catch
-{
-  res.json({Error: "Could not follow/unfollow user"});
-}
-
+  catch
+  {
+    res.json({Error: "Could not follow/unfollow user"});
+  }
 }
 
 //Edit bio
 exports.validateBio = async(req, res, next) => {
-
+try {
   if(req.body.bio.length > 250)
   {
     res.json({Error: "Inputted bio length is too long"});
     return;
   }
   next();
-
+  } 
+  catch {
+    res.json({Error: "Something went wrong when editing the bio"});
+  }
 }
 exports.editBio = async (req, res) => {
-  let user = await exports.userExists(req.params.userID);
-
-  if(user === false)
-  {
-    res.json({Error: "User doesn't exist to edit bio"});
-    return;
-  }
-
   try {
+    let user = await exports.userExists(req.params.userID);
+    if(user === false)
+    {
+      res.json({Error: "User doesn't exist to edit bio"});
+      return;
+    }
     user.a_bio = req.body.bio;
     user.save();
     res.json({bio: user.a_bio});
@@ -135,15 +132,15 @@ exports.editBio = async (req, res) => {
 // Split this so that one function checks if the user already exists 
 // and the next adds them to the database
 exports.createUser = async function createUser(req, res) {
-  userdetails = {
-    a_username: req.body.username.toLowerCase(), 
-    a_password: req.body.password, 
-    a_bio: "Create a Bio",
-    a_posts: [],
-    a_followers: []
-  }
-  var user = new User(userdetails);
   try {
+    userdetails = {
+      a_username: req.body.username.toLowerCase(), 
+      a_password: req.body.password, 
+      a_bio: "Create a Bio",
+      a_posts: [],
+      a_followers: []
+    }
+    var user = new User(userdetails);
     if (await exports.userExists(req.body.username.toLowerCase())) {
       res.json({Error: "User already exists"})
       return;

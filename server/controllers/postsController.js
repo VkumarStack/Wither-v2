@@ -50,104 +50,108 @@ exports.getPostID = async function getPostID(req, res) {
 
 //Create new post
 exports.createPost = async function createPost(req, res) {
-  let user = await User.userExists(req.body.username);
-  if ( user === false)
-  {
-    res.json({Error: "User creating post does not exist"});
-    return;
-  }
+    try {
+      let user = await User.userExists(req.body.username);
+      if ( user === false)
+      {
+        res.json({Error: "User creating post does not exist"});
+        return;
+      }
 
-  current_Date = Date();
-    postdetails = {
-      a_text: req.body.text,
-      a_username: req.body.username,
-      a_dateCreated: current_Date,
-      a_likes: [],
-      a_dislikes: [],
-    }
+      current_Date = Date();
+      postdetails = {
+        a_text: req.body.text,
+        a_username: req.body.username,
+        a_dateCreated: current_Date,
+        a_likes: [],
+        a_dislikes: [],
+      }
 
-    //check length of text
-    if (req.body.text.length > 280) {
-      res.json({Error: "Text too long"})
-      return;
-    }
+      //check length of text
+      if (req.body.text.length > 280) {
+        res.json({Error: "Text too long"})
+        return;
+      }
 
-    if (!(await User.userExists(req.body.username.toLowerCase()))) {
-      res.json({Error: "User does not exist"})
-      return;
-    }
+      if (!(await User.userExists(req.body.username.toLowerCase()))) {
+        res.json({Error: "User does not exist"})
+        return;
+      }
 
-    const newPost = new Post(postdetails);
-    try{
+      const newPost = new Post(postdetails);
       await newPost.save();
       console.log(newPost)
       user.a_posts.push(newPost._id);
       await user.save();
       res.json(newPost);
       return;
-    } catch{
+     } 
+     catch {
       res.json({Error: "Something went wrong with creating your post"});
-    }
-  }
+     }
+}
 
 //Like or Dislike post
 exports.ratePost = async (req, res) => {
-    let user = await User.userExists(req.body.username.toLowerCase());
-    if (!user) {
-      res.json({Error: "User does not exist"})
-      return;
-    }
+    try {
+      let user = await User.userExists(req.body.username.toLowerCase());
+      if (!user) {
+        res.json({Error: "User does not exist"})
+        return;
+      }
 
-    let post = await exports.postExists(req.params.postID);
-    //Check if post exists
-    if (!post) {
-      res.json({Error: "Post does not exist"})
-      return;
-    }
-    if (req.body.boolean.toLowerCase() === "true")
-    {
-      let index = post.a_likes.indexOf(user.a_username);
-      if (index !== -1)
+      let post = await exports.postExists(req.params.postID);
+      //Check if post exists
+      if (!post) {
+        res.json({Error: "Post does not exist"})
+        return;
+      }
+      if (req.body.boolean.toLowerCase() === "true")
       {
-        //remove user from list of likes
-        post.a_likes.splice(index, 1);
+        let index = post.a_likes.indexOf(user.a_username);
+        if (index !== -1)
+        {
+          //remove user from list of likes
+          post.a_likes.splice(index, 1);
+        }
+        else
+        {
+          //add user to list of likes
+          post.a_likes.push(user.a_username);
+        }
       }
       else
       {
-        //add user to list of likes
-        post.a_likes.push(user.a_username);
+        let index = post.a_dislikes.indexOf(user.a_username);
+        if (index !== -1)
+        {
+          //remove user from list of dislikes
+          post.a_dislikes.splice(index, 1);
+        }
+        else
+        {
+          //add user to list of dislikes
+          post.a_dislikes.push(user.a_username);
+        }
       }
-    }
-    else
-    {
-      let index = post.a_dislikes.indexOf(user.a_username);
-      if (index !== -1)
-      {
-        //remove user from list of dislikes
-        post.a_dislikes.splice(index, 1);
-      }
-      else
-      {
-        //add user to list of dislikes
-        post.a_dislikes.push(user.a_username);
-      }
-    }
 
-    if (post.a_dislikes.length >= 5 && post.a_dislikes.length >= 2 * post.a_likes.length)
-    {
-      let postUser = await User.userExists(post.a_username.toLowerCase());
-      let index = postUser.a_posts.indexOf(post._id);
-      postUser.a_posts.splice(index, 1);
-      postUser.save();
+      if (post.a_dislikes.length >= 5 && post.a_dislikes.length >= 2 * post.a_likes.length)
+      {
+        let postUser = await User.userExists(post.a_username.toLowerCase());
+        let index = postUser.a_posts.indexOf(post._id);
+        postUser.a_posts.splice(index, 1);
+        await postUser.save();
+        
+        await Post.deleteOne({_id: post._id});
+
+        res.json({Deleted: "true"})
+        return;
+      }
+      else post.save();
       
-      // Fix delete:
-      Post.deleteOne({_id: post._id});
-      post.save();
-
-      res.json({Deleted: "true"})
-      return;
+      res.json({likes: post.a_likes, dislikes: post.a_dislikes});
     }
-    else post.save();
-    
-    res.json({likes: post.a_likes, dislikes: post.a_dislikes});
+    catch {
+      res.json({Error: "Something went wrong with rating the post"});
+    }
   };
