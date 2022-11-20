@@ -133,13 +133,21 @@ exports.ratePost = async (req, res) => {
       }
     }
 
-    post.save();
-    // Check if the post should be deleted if:
-    // There's a minimum of 5 dislikes and the number of dislikes >= 2 * number of likes
-    // Check the user.a_posts for the current post and remove it from that list 
-    // Make sure to save user (user.save()) 
-    // And then delete the post (deleteOne({ _id })) 
-    // and do  post.save() to confirm that its being deleted
-    // Return in res { Deleted: true}
+    if (post.a_dislikes.length >= 5 && post.a_dislikes.length >= 2 * post.a_likes.length)
+    {
+      let postUser = await User.userExists(post.a_username.toLowerCase());
+      let index = postUser.a_posts.indexOf(post._id);
+      postUser.a_posts.splice(index, 1);
+      postUser.save();
+      
+      // Fix delete:
+      Post.deleteOne({_id: post._id});
+      post.save();
+
+      res.json({Deleted: "true"})
+      return;
+    }
+    else post.save();
+    
     res.json({likes: post.a_likes, dislikes: post.a_dislikes});
   };
