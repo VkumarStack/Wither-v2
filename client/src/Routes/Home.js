@@ -11,31 +11,34 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            following: null 
+            following: null,
+            usernames: []
         };
     }
 
+    /*
+    async componentDidMount() {
+        let user = sessionStorage.getItem("user");
+        if (user !== null)
+        {
+            let response = await fetch(`http://localhost:8080/users/${user}`);
+            response = await response.json();
+            if (!response.Error)
+            {
+                let usernames = response.a_followers;
+                if (usernames.)
+            }
+        }
+    }
+    */
     render() {
-        if (sessionStorage.getItem("token") === null)
-            return (
-                <div className="Home">
-                    <HeaderBar/>
-                    <div className="posts">
-                        <Post post=/* TODO GET posts of all users */{{id: 123, user: "Welcome", text: "Join Wither to get your own personalized timeline!", likes: [1,1,1,1,1,1,1,1,1,1,1], dislikes: []}}/>
-                        <PostsDisplay></PostsDisplay> 
-                    </div>
-                </div>
-            );
-        else 
-            return (
-                <div className="Home">
+        // ToDo: If user is logged in, display posts from themselves and all users that they are following
+        return (
+            <div className="Home">
                 <HeaderBar/>
-                <div className="posts">
-                    <CreatePost></CreatePost>
-                    <PostsDisplay></PostsDisplay> 
-                </div>
+                <PostsDisplay/>
             </div>
-        )
+        );
     }
 }
 export default Home;

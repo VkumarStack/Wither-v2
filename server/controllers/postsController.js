@@ -94,45 +94,45 @@ exports.createPost = async function createPost(req, res) {
 //Like or Dislike post
 exports.ratePost = async (req, res) => {
     try {
+      req.body.boolean = String(req.body.boolean);
       let user = await User.userExists(req.body.username.toLowerCase());
       if (!user) {
         res.json({Error: "User does not exist"})
         return;
       }
-
       let post = await exports.postExists(req.params.postID);
       //Check if post exists
       if (!post) {
         res.json({Error: "Post does not exist"})
         return;
       }
-      if (req.body.boolean.toLowerCase() === "true")
+      // Had to alter the code here because I realized that if a user has liked a post and then dislikes, it should remove their dislike (and vice versa)
+      let likeIndex = post.a_likes.indexOf(user.a_username);
+      let dislikeIndex = post.a_dislikes.indexOf(user.a_username);
+      
+      // Remove the like if the like exists and either the user has already liked it (so they are removing a like) or they have disliked it already (so the like must be undone)
+      if (likeIndex !== -1 && (req.body.boolean.toLowerCase() === "true" || (req.body.boolean.toLowerCase() !== "true" && dislikeIndex === -1)))
       {
-        let index = post.a_likes.indexOf(user.a_username);
-        if (index !== -1)
-        {
-          //remove user from list of likes
-          post.a_likes.splice(index, 1);
-        }
-        else
-        {
-          //add user to list of likes
-          post.a_likes.push(user.a_username);
-        }
+        //remove user from list of likes
+        post.a_likes.splice(likeIndex, 1);
       }
-      else
+      // Add them to likes if request is for a like and the like is not already in the array
+      if (req.body.boolean.toLowerCase() === "true" && likeIndex === -1)
       {
-        let index = post.a_dislikes.indexOf(user.a_username);
-        if (index !== -1)
-        {
-          //remove user from list of dislikes
-          post.a_dislikes.splice(index, 1);
-        }
-        else
-        {
-          //add user to list of dislikes
-          post.a_dislikes.push(user.a_username);
-        }
+        //add user to list of likes
+        post.a_likes.push(user.a_username);
+      }
+      // Remove the dislike if the dislike exists and the user has already disliked it (so they are removing the dislike) or they have liked already (so the dislike must be undone)
+      if (dislikeIndex !== -1 && (req.body.boolean.toLowerCase() !== "true" || (req.body.boolean.toLowerCase() === "true" && likeIndex === -1)))
+      {
+        //remove user from list of dislikes
+        post.a_dislikes.splice(dislikeIndex, 1);
+      }
+      // Add them to dislikes if the request is for a dislike and the dislike is not already in the array
+      if (req.body.boolean.toLowerCase() !== "true" && dislikeIndex === -1)
+      {
+        //add user to list of dislikes
+        post.a_dislikes.push(user.a_username);
       }
 
       if (post.a_dislikes.length >= 5 && post.a_dislikes.length >= 2 * post.a_likes.length)
@@ -147,7 +147,7 @@ exports.ratePost = async (req, res) => {
         res.json({Deleted: "true"})
         return;
       }
-      else post.save();
+      else await post.save();
       
       res.json({likes: post.a_likes, dislikes: post.a_dislikes});
     }

@@ -40,3 +40,7 @@ a:hover {
 .like-info svg:hover, .dislike-info svg:hover {
     color: rgb(79, 56, 56);
 }
+
+svg.liked, svg.disliked {
+    color: rgb(161, 7, 7);
+}

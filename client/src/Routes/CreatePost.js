@@ -11,7 +11,6 @@ class CreatePost extends React.Component {
         };
     }
 
-    // TODO: posting error, get user?
     async handleSubmit(e) {
         e.preventDefault();
         let response = await fetch("http://localhost:8080/posts/", {

@@ -6,6 +6,7 @@ import HeaderBar from './HeaderBar';
 import CreatePost from "./CreatePost";
 import EditBio from "./EditBio";
 import UserInfo from "./UserInfo";
+import PostDisplay from "./PostsDisplay";
 
 class Profile extends React.Component {
     // Assume props is the current user
@@ -64,11 +65,7 @@ class Profile extends React.Component {
                     <div>
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                     </div>
-                    <div className="posts"/* TODO: GET posts based on user ID */>
-                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                    </div>
+                    <PostDisplay usernames={[this.state.current]}/>
                 </div>
             )
         }
@@ -80,11 +77,7 @@ class Profile extends React.Component {
                         <div /* TODO: add follow button */></div>
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                     </div>
-                    <div className="posts"/* TODO: GET posts based on user ID */>
-                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                    </div>
+                    <PostDisplay usernames={[this.state.current]}/>
                 </div>
             )
         }
@@ -99,11 +92,9 @@ class Profile extends React.Component {
                         to the Profile component's state and not the Edit component's state*/}
                         <EditBio changeBio={this.changeBio.bind(this)}/>
                     </div>
-                    <div className="posts"/* TODO: GET posts based on user ID */>
-                        <CreatePost></CreatePost>
-                        <Post post={{id: 111, user: "joebruin", text: "I love UCLA!", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "Crazy how I never miss a football game.", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
-                        <Post post={{id: 111, user: "joebruin", text: "I miss Josie", likes: ["John Doe", "Doe John"], dislikes: ["Traveler Trojan", "Oski Bear"]}}/>
+                    <div>
+                        <CreatePost/>
+                        <PostDisplay usernames={[this.state.current]}/>
                     </div>
                 </div>
             )
