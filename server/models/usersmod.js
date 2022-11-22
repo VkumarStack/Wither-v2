@@ -11,7 +11,8 @@ const UserModelSchema = new Schema({
     a_password: {type: String, required: true},
     a_bio: {type: String},
     a_posts: [{type: Schema.Types.ObjectId, ref: "Post"}],
-    a_followers: [{type: String}]
+    a_followers: [{type: String}],
+    a_following: [{type: String}]
 });
 
 UserModelSchema.virtual("url").get(function () {

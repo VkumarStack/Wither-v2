@@ -73,18 +73,31 @@ exports.followUser = async (req, res) => {
     if(userFollowing !== false && userFollowed !== false)
     {
       let n = userFollowed.a_followers.indexOf(userFollowing.a_username);
-      console.log(n);
+      let g = userFollowing.a_following.indexOf(userFollowed.a_username);
+      //console.log(n);
       if(n >= 0)
       {
-        console.log("test");
+        //console.log("test");
         userFollowed.a_followers.splice(n, 1);
       }
       else
       {
         userFollowed.a_followers.push(userFollowing.a_username);
+        
+      }
+      if(g >= 0)
+      {
+        //console.log("test");
+        userFollowing.a_following.splice(n, 1);
+      }
+      else
+      {
+        userFollowing.a_following.push(userFollowed.a_username);
       }
       await userFollowed.save();
-      res.json({ followed_List: userFollowed.a_followers });
+      await userFollowing.save();
+      res.json({ followed_List: userFollowed.a_followers, following_list: userFollowing.a_following });
+     // res.json({ following_List: userFollowing.a_following });
     }
     else
       res.json({Error: "User doesn't exist"}); 
