@@ -50,3 +50,9 @@
 .Post .date-container p {
     font-style: italic;
 }
+
+.Post .withered {
+    font-size: 50px;
+    font-style: italic;
+    font-weight: bolder;
+}

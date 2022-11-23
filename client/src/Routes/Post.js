@@ -92,7 +92,7 @@ class Post extends React.Component {
                     <a href={window.location.origin + "/users/" + this.state.user}>
                         <h2> @{this.state.user} </h2>
                     </a>
-                    <p className="Withered"> This post has been withered. </p>
+                    <p className="withered"> This post has been withered. </p>
                 </div>
             );
     }

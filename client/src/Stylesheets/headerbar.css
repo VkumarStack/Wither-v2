@@ -19,6 +19,11 @@
     align-items: center;
     gap: 15px;
     padding: 0px 15px;
+    color: rgb(201, 197, 197);
+}
+
+.HeaderBar svg {
+    fill: rgb(201, 197, 197);
 }
 
 .HeaderBar .logo-title:hover h1 {
