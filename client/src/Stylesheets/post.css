@@ -1,13 +1,4 @@
-* {
-    margin: 0px;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:hover {
+.Post a:hover {
     color: rgb(79, 56, 56);
 }
 
@@ -18,29 +9,44 @@ a:hover {
     gap: 5px;
     padding: 10px;
 
-    width: 300px;
+    width: 550px;
 
+    box-shadow: 5px 10px 5px #2e2b2b;
     border-radius: 25px;
-    background-color: rgb(245, 248, 250);
+    color: rgb(201, 197, 197);
+    background-color: #262626;
+    word-wrap: break-word;
 }
 
-.likes-dislikes {
+.Post a>h2 {
+    font-size: 30px;
+}
+
+.Post>p {
+    font-size: 24px;
+}
+
+.Post .likes-dislikes {
     display: flex;
     flex-direction: row;
     gap: 50px;
 }
 
-.like-info, .dislike-info {
+.Post .like-info, .dislike-info {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
 
-.like-info svg:hover, .dislike-info svg:hover {
+.Post .like-info svg:hover, .dislike-info svg:hover {
     color: rgb(79, 56, 56);
 }
 
-svg.liked, svg.disliked {
-    color: rgb(161, 7, 7);
+.Post svg.liked, svg.disliked {
+    color: rgb(34, 1, 1);
+}
+
+.Post .date-container p {
+    font-style: italic;
 }

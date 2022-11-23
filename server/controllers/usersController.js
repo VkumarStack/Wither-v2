@@ -151,7 +151,8 @@ exports.createUser = async function createUser(req, res) {
       a_password: req.body.password, 
       a_bio: "Create a Bio",
       a_posts: [],
-      a_followers: []
+      a_followers: [],
+      a_following: []
     }
     var user = new User(userdetails);
     if (await exports.userExists(req.body.username.toLowerCase())) {

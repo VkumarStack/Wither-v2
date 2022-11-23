@@ -1,4 +1,4 @@
-html, body, #root, .Home {
+.Home {
     height: 100%;
 }
 
@@ -6,16 +6,7 @@ html, body, #root, .Home {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
     
-    padding: 10px;
-    
-    background-color: rgb(78, 72, 72);
-}
-
-#user-search {
-    height: 30px;
-    width: 50%;
-    border-radius: 25px;
-    border: none;
-    padding: 10px;
+    background-color: #000000;
 }

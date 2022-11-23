@@ -1,4 +1,5 @@
 import React from "react";
+import Moment from "moment"
 import { ReactDOM } from "react";
 import "../Stylesheets/post.css"
 
@@ -25,7 +26,8 @@ class Post extends React.Component {
         let response = await fetch(`http://localhost:8080/posts/${id}`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token"),
             },
             body: JSON.stringify({username: user, boolean: like})
         })
@@ -38,6 +40,11 @@ class Post extends React.Component {
                 return;
             }
             this.setState({ likes: response.likes, dislikes: response.dislikes});
+        }
+        else if (response.Error && response.TokenError)
+        {
+            sessionStorage.clear();
+            window.location.reload(true);
         }
     }
 
@@ -75,7 +82,7 @@ class Post extends React.Component {
                         </div>
                     </div>
                     <div className="date-container">
-                        <p> { new Date(this.state.date).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})} </p>
+                        <p> { Moment(new Date(this.state.date)).fromNow() } </p>
                     </div>
                 </div>
             );
@@ -85,7 +92,7 @@ class Post extends React.Component {
                     <a href={window.location.origin + "/users/" + this.state.user}>
                         <h2> @{this.state.user} </h2>
                     </a>
-                    <p> This post has been withered. </p>
+                    <p className="Withered"> This post has been withered. </p>
                 </div>
             );
     }

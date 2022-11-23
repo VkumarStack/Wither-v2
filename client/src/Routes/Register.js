@@ -66,7 +66,7 @@ class Register extends React.Component {
     render() {
         return (
             <div className="Register">
-                <div className="register-button" onClick={() => this.setState({show: !this.state.show})}> Register </div>
+                <div className="register-button button" onClick={() => this.setState({show: !this.state.show})}> Register </div>
                 {   this.state.show &&
                         <form onSubmit={ (e) => {this.handleSubmit(e)}}>
                             <div className="form-container">

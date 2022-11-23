@@ -18,16 +18,27 @@ class EditBio extends React.Component {
         let response = await fetch(`http://localhost:8080/users/${this.state.user}/bio`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token"),
             },
-            body: JSON.stringify({user: this.state.user, bio: e.target.bio.value})
+            body: JSON.stringify({username: this.state.user, bio: e.target.bio.value})
         })
         response = await response.json();
+        console.log(response);
         if (response.Error)
         {
-            // do not post 
-            this.setState({errorMessage: response.Error});
-            setTimeout(() => {this.setState({errorMessage: null})}, 20000);
+            // If the user is logged in but their sign in token is bad (sign in token expires after 2 hours), log them out and reload the page
+            if (response.TokenError)
+            {
+                sessionStorage.clear();
+                window.location.reload(true);
+            }
+            else 
+            {
+                // do not post 
+                this.setState({errorMessage: response.Error});
+                setTimeout(() => {this.setState({errorMessage: null})}, 20000);
+            }
         }
         else
         {

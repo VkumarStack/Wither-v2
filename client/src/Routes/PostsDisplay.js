@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./Post";
+import "../Stylesheets/postdisplay.css";
 
 class PostDisplay extends React.Component {
     // Pass in (optional) username for props - if there is a username, show all posts from users that they follow
@@ -13,6 +14,11 @@ class PostDisplay extends React.Component {
 
     async componentDidMount() {
         await this.getPosts();
+    }
+
+    async componentDidUpdate(prevProps) {
+        if (this.props.usernames !== prevProps.usernames)
+            await this.getPosts();
     }
 
     async getPosts() {
@@ -68,7 +74,7 @@ class PostDisplay extends React.Component {
     }
 
     generatePosts() {
-        if (Object.keys(this.state.posts).length == 0)
+        if (Object.keys(this.state.posts).length === 0)
             return;
         const sorted = Object.values(this.state.posts).sort( (a, b) => {
             return new Date(b.a_dateCreated) - new Date(a.a_dateCreated);

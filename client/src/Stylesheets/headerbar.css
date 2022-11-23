@@ -1,30 +1,64 @@
-div.HeaderBar {
+@font-face {
+    font-family: Beccaria;
+    src: url('../Fonts/Beccaria.ttf');
+}
+
+.HeaderBar {
     width: 100%;
 
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: space-between;  
     gap: 10px;
+    background-color: #262626;
+    box-shadow: 0px 5px 5px #423b3b;
 }
 
-h1 {
-    width: 30%;
-    font-size: 50px;
+.HeaderBar .logo-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0px 15px;
 }
 
-div.SearchBar {
+.HeaderBar .logo-title:hover h1 {
+    color: rgb(79, 56, 56);
+}
+
+.HeaderBar .logo-title:hover svg {
+    fill: rgb(79, 56, 56);
+}
+
+.HeaderBar svg {
+    height: 50px;
+}
+
+.HeaderBar .logo-title h1 {
+    font-size: 70px;
+    font-family: Beccaria;
+}
+
+
+.HeaderBar div.SearchBar {
     width: 50%;
 }
 
-button {
-    width: 20%;
+.HeaderBar .user-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0px 10px;
+    width: 30%;
 }
 
-div.Logout .logout-button {
+
+.HeaderBar div.Logout .logout-button {
     border-radius: 5px;
     color: white;
-    background-color: rgb(0, 0, 0);
-    
+    background-color: rgb(27, 25, 25);
+    font-size: 18px;
+    font-weight: bold;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,15 +66,17 @@ div.Logout .logout-button {
     width: 200px;
 }
 
-div.Logout .logout-button:hover {
-    background-color: rgb(27, 25, 25);
+.HeaderBar div.Logout .logout-button:hover {
+    background-color: rgb(61, 33, 33);
 }
 
-div.YourProfile .profile-button {
+.HeaderBar div.YourProfile .profile-button {
     border-radius: 5px;
     color: white;
-    background-color: rgb(0, 0, 0);
-    
+    background-color: rgb(27, 25, 25);
+    font-size: 18px;
+    font-weight: bold;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,6 +84,6 @@ div.YourProfile .profile-button {
     width: 200px;
 }
 
-div.YourProfile .profile-button:hover {
-    background-color: rgb(27, 25, 25);
+.HeaderBar div.YourProfile .profile-button:hover {
+    background-color: rgb(61, 33, 33);
 }

@@ -49,7 +49,7 @@ exports.compareToken = async function compareToken(req, res, next) {
     const auth = req.headers['authorization'];
     const token = auth && auth.split(' ')[1];
     if (token === null) {
-        res.json({Error: "No token provided"});
+        res.json({Error: "No token provided", TokenError: true});
         return;
     }
     else {
@@ -59,10 +59,10 @@ exports.compareToken = async function compareToken(req, res, next) {
                 next();
             else
             {
-                res.json({Error: "Invalid user matching"});
+                res.json({Error: "Invalid user matching", TokenError: true});
             }
         } catch {
-            res.json({Error: "Invalid token"});
+            res.json({Error: "Invalid token", TokenError: true});
             return;
         }
     }

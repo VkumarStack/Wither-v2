@@ -1,21 +1,23 @@
-div.SignIn {
+.SignIn {
     position: relative;
 
     display: flex;
     flex-direction: column;
 }
 
-div.sign-in-button, div.form-container {
+.SignIn .sign-in-button, .SignIn div.form-container {
     border-radius: 5px;
-    color: white;
-    background-color: rgb(0, 0, 0);
-}
-
-div.sign-in-button:hover, div.form-container:hover {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-weight: bold;
     background-color: rgb(27, 25, 25);
 }
 
-div.sign-in-button {
+.SignIn div.sign-in-button:hover, .SignIn div.form-container:hover {
+    background-color: rgb(61, 33, 33);
+}
+
+.SignIn div.sign-in-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,12 +27,12 @@ div.sign-in-button {
 }
 
 
-div.SignIn form {
+.SignIn form {
     position: absolute;
-    top: 50px;
+    top: 40px;
 }
 
-div.SignIn div.form-container {
+.SignIn div.form-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,22 +41,37 @@ div.SignIn div.form-container {
     padding: 10px;
 }
 
-div.SignIn button {
+.SignIn button {
     height: 30px;
     width: 50%;
 
     color: black;
+    font-size: 16px;
+    font-weight: bold;
     background-color: white;
 
     border: none;
     border-radius: 5px;
 }
 
-div.SignIn button:hover, div.SignIn input:focus {
+
+.SignIn input {
+    height: 27px;
+    width: 90%;
+    padding: 5px;
+    border: 0px;
+
+    border-radius: 5px;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.SignIn button:hover, .SignIn input:focus {
     background-color: rgb(224, 231, 238);
 }
 
-div.SignIn h1 {
+.SignIn h1 {
     font-size: 20px;
-    color: rgb(115, 23, 23);
+    color: rgb(255, 255, 255);
 }

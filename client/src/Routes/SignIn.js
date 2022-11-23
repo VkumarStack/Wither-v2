@@ -35,7 +35,7 @@ class SignIn extends React.Component {
     render() {
         return (
             <div className="SignIn">
-                <div className="sign-in-button" onClick={() => this.setState({show: !this.state.show})}> Sign In </div>
+                <div className="sign-in-button button" onClick={() => this.setState({show: !this.state.show})}> Sign In </div>
                 { this.state.show && 
                 
                     <form onSubmit={ (e) => { this.handleSubmit(e) } }>

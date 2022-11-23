@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* Controller vars */
 const posts_controller = require("../controllers/postsController");
+const auth_controller = require("../controllers/authenticationController");
 
 //GET specific post
 // This should return all of the information for a specific post in a JSON 
@@ -23,6 +24,7 @@ router.get("/", posts_controller.getPosts);
 // current time as the date and the author being set to the username passed in the request body.
 // It should check to see if the User actually exists in the database (and if they don't, then 
 // don't create the post and return an Error JSON object) before setting the post author.
+router.post("/", auth_controller.compareToken);
 router.post("/", posts_controller.createPost);
 
 //PUT like/dislike
@@ -34,6 +36,7 @@ router.post("/", posts_controller.createPost);
 // already liked by the user, add the user to post's array of likes. If the user has already liked it, then remove 
 // their like from the post's array of likes. 
 // Do the same functionality for dislikes. 
+router.put("/:postID", auth_controller.compareToken);
 router.put("/:postID", posts_controller.ratePost);
 
 module.exports = router;

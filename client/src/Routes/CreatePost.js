@@ -16,16 +16,26 @@ class CreatePost extends React.Component {
         let response = await fetch("http://localhost:8080/posts/", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token"),
             },
             body: JSON.stringify({username: this.state.user, text: e.target.text.value})
         })
         response = await response.json();
         if (response.Error)
         {
-            // do not post 
-            this.setState({errorMessage: response.Error});
-            setTimeout(() => {this.setState({errorMessage: null})}, 20000);
+            // If the user is logged in but their sign in token is bad (sign in token expires after 2 hours), log them out and reload the page
+            if (response.TokenError)
+            {
+                sessionStorage.clear();
+                window.location.reload(true);
+            }
+            else
+            {
+                // do not post 
+                this.setState({errorMessage: response.Error});
+                setTimeout(() => {this.setState({errorMessage: null})}, 20000);
+            }
         }
         else
         {
@@ -44,7 +54,11 @@ class CreatePost extends React.Component {
     render() {
         return (
             <div className="CreatePost">
-                <div className="create-post-button" onClick={() => this.setState({show: !this.state.show})}> Create Post </div>
+                <div className="create-post-button" onClick={() => this.setState({show: !this.state.show})}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </div>
                 { this.state.show && 
                     <form onSubmit={ (e) => { this.handleSubmit(e) } }>
                         <div className="form-container">
