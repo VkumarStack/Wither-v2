@@ -62,7 +62,7 @@ class Profile extends React.Component {
         {
             return (
                 <div className='rowC'>
-                    <div>
+                    <div className="userinfo-container">
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                     </div>
                     <PostDisplay usernames={[this.state.current]}/>
@@ -73,7 +73,7 @@ class Profile extends React.Component {
         {
             return (
                 <div className='rowC'>
-                    <div>
+                    <div className="userinfo-container">
                         <div /* TODO: add follow button */></div>
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                     </div>
@@ -85,7 +85,7 @@ class Profile extends React.Component {
         {
             return (
                 <div className='rowC'>
-                    <div>
+                    <div className="userinfo-container">
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                         {/* The changeBio function is being passed to the EditBio component, but is being bound
                         to this component  (Profile) - so when changeBio() references "this" in its function, it will refer 

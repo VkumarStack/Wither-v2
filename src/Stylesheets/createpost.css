@@ -1,65 +1,75 @@
-div.CreatePost {
+.CreatePost {
     position: relative;
     align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-div.create-post-button, div.form-container {
+.CreatePost div.create-post-button, .CreatePost div.form-container {
     border-radius: 5px;
     color: white;
-    background-color: rgb(0, 0, 0);
+    background-color: #262626;
 }
 
-textarea { 
+.CreatePost textarea { 
     resize: none;
     min-width: fill;
-    min-height: 140px;
+    min-height: 200px;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(201, 197, 197);
 }
 
-div.create-post-button:hover, div.form-container:hover {
-    background-color: rgb(27, 25, 25);
+.CreatePost div.create-post-button:hover, .CreatePost div.form-container:hover {
+    background-color: rgb(61, 33, 33);
 }
 
-div.create-post-button {
+.CreatePost .create-post-button {
     display: flex;
     justify-content: center;
     align-items: center;
     
     height: 35px;
-    width: 300px;
     margin: 10px;
 }
 
-div.CreatePost form {
+.CreatePost form {
     position: flex;
     top: 50px;
     padding: 10px;
-    width: 300px;
+    width: 570px;
 }
 
-div.CreatePost div.form-container {
+.CreatePost div.form-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+    border-radius: 25px;
+    box-shadow: 5px 10px 5px #2e2b2b;
     
     padding: 10px;
     height: fit-content;
 
 }
 
-div.CreatePost button { 
+.CreatePost button { 
     height: 30px;
-    width: 35%;
+    width: 100px;
 
     color: black;
     background-color: white;
 
+    font-size: 14px;
+    font-weight: bold;
     border: none;
     border-radius: 5px;
 }
 
-div.CreatePost button:hover, div.CreatePost input:focus {
+.CreatePost button:hover, .CreatePost input:focus {
     background-color: rgb(224, 231, 238);
 }

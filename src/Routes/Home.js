@@ -16,29 +16,39 @@ class Home extends React.Component {
         };
     }
 
-    /*
+    
     async componentDidMount() {
         let user = sessionStorage.getItem("user");
         if (user !== null)
         {
             let response = await fetch(`http://localhost:8080/users/${user}`);
             response = await response.json();
+            console.log(response);
             if (!response.Error)
             {
-                let usernames = response.a_followers;
-                if (usernames.)
+                let usernames = response.a_following;
+                usernames.push(user);
+                this.setState({ usernames: usernames});
             }
         }
     }
-    */
+
     render() {
-        // ToDo: If user is logged in, display posts from themselves and all users that they are following
-        return (
-            <div className="Home">
-                <HeaderBar/>
-                <PostsDisplay/>
-            </div>
-        );
+        if (sessionStorage.getItem("user") === null)
+            return (
+                <div className="Home">
+                    <HeaderBar/>
+                    <PostsDisplay/>
+                </div>
+            );
+        else
+            return (
+                <div className="Home">
+                    <HeaderBar/>
+                    <CreatePost/>
+                    <PostsDisplay usernames={this.state.usernames}/>
+                </div>
+            );
     }
 }
 export default Home;

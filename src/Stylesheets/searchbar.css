@@ -1,31 +1,36 @@
-div.SearchBar {
+.SearchBar {
     position: relative;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
-input {
+.SearchBar input {
     height: 27px;
     width: 90%;
     padding: 5px;
     border: 0px;
 
     border-radius: 5px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    outline: none;
 }
 
-input:focus+ul {
+.SearchBar input:focus+ul {
     display: block;
     position: absolute;
     z-index: 1;
     width: 90%;
 }
 
-ul:hover {
+.SearchBar ul:hover {
     display: block;
     position: absolute;
     width: 90%;
 }
 
-ul {
+.SearchBar ul {
     display: none;
     
     padding: 5px;
@@ -35,21 +40,23 @@ ul {
 
     border-radius: 5px;
 
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(27, 25, 25);
 }
 
-ul:empty {
+.SearchBar ul:empty {
     padding: 0px;
 }
 
-li {
+.SearchBar li {
     padding: 15px;
 
     border-radius: 10px;
 
+    font-size: 16px;
+    font-weight: bold;
     color: white;
 }
 
-li:hover {
-    background-color: rgb(27, 25, 25);
+.SearchBar li:hover {
+    background-color: rgb(61, 33, 33);
 }
