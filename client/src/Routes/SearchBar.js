@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import '../Stylesheets/searchbar.css';
 
 class SearchBar extends React.Component {
@@ -29,7 +30,7 @@ class SearchBar extends React.Component {
         let matches = []
         this.state.users.forEach(user => {
             if (user.toLowerCase().includes(expression.toLowerCase()))
-                matches.push(<a key={user.toLowerCase()} href={window.location.origin + "/users/" + user}><li>{user}</li></a>)
+                matches.push(<Link to={`/users/${user}`} key={user.toLowerCase()}> <li>{user}</li></Link> )
         })
         return (<ul>{matches}</ul>);
     }

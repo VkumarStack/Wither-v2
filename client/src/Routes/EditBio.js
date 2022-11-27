@@ -1,6 +1,7 @@
 import React from "react";
 import '../Stylesheets/editbio.css';
 
+
 class EditBio extends React.Component {
     constructor(props) {
         super(props);

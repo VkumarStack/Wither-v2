@@ -1,16 +1,17 @@
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import { HahsRouter, BrowserRouter, Routes, Route, useParams, HashRouter } from 'react-router-dom';
 import Home from './Routes/Home'
+import HeaderBar from './Routes/HeaderBar';
 import Profile from './Routes/Profile';
 
 const RouteSwitch = () => {
     return (
-        <BrowserRouter>
+        <HashRouter basename='/'>
             <Routes>
-                <Route path='/' element={<Home/>} />
+                <Route exact path='/' element={<Home/>} />
                 <Route path='/users/:id' element={<Profile/>} />
                 <Route path='/users/:id/:pid' element={<User/>} />
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 

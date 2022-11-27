@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ReactDOM } from "react";
 import '../Stylesheets/profile.css';
 import Post from './Post';
@@ -8,13 +9,101 @@ import EditBio from "./EditBio";
 import UserInfo from "./UserInfo";
 import PostDisplay from "./PostsDisplay";
 
+function Profile(props) {
+    const [user, setUser] = useState(sessionStorage.getItem("user"));
+    let { id } = useParams();
+    const [current, setCurrent] = useState(id);
+    const [bio, setBio] = useState("");
+    const [followers, setFollowers] = useState(0);
+
+    useEffect(() => {
+        setCurrent(id);
+    }, [id]);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/users/${current}`)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            if (!data.Error)
+            {
+                setBio(data.a_bio);
+                setFollowers(data.a_followers);
+            }
+        });
+    }, [current]);
+
+    function chooseRender(loggedIn, theirProfile) {
+        const key = `${loggedIn}-${theirProfile}`
+        if (key === "false-false")
+        {
+            return (
+                <div className='rowC'>
+                    <div className="userinfo-container">
+                        <UserInfo bio={bio} followers={followers}/>
+                    </div>
+                    <PostDisplay usernames={[current]}/>
+                </div>
+            )
+        }
+        else if (key === "true-false")
+        {
+            return (
+                <div className='rowC'>
+                    <div className="userinfo-container">
+                        <div></div>
+                        <UserInfo bio={bio} followers={followers}/>
+                    </div>
+                    <PostDisplay usernames={[current]}/>
+                </div>
+            )
+        }
+        else if (key === "true-true")
+        {
+            return (
+                <div className='rowC'>
+                    <div className="userinfo-container">
+                        <UserInfo bio={bio} followers={followers}/>
+                        {}
+                        <EditBio changeBio={setBio}/>
+                    </div>
+                    <div>
+                        <CreatePost/>
+                        <PostDisplay usernames={[current]}/>
+                    </div>
+                </div>
+            )
+        }
+        else 
+            return null;
+    }
+
+    let loggedIn = true;
+    let theirProfile = false;
+    if (sessionStorage.getItem("token") === null){
+        loggedIn = false;
+    } else {
+        if (user === current) {
+            theirProfile = true;
+        }
+    }
+    return (
+        <div className="Profile">
+            <HeaderBar profile={current}/>
+            {chooseRender(loggedIn, theirProfile)}
+        </div>
+    )
+}
+/*
 class Profile extends React.Component {
     // Assume props is the current user
     constructor(props) {
         super(props);
+        console.log("PROPS")
+        console.log(this.props.match)
         this.state = {
             user: sessionStorage.getItem("user"),
-            current: window.location.pathname.split("/").pop(),
+            current: window.location.href.split("/").pop(),
             bio: "",
             followers: 0
 
@@ -74,7 +163,7 @@ class Profile extends React.Component {
             return (
                 <div className='rowC'>
                     <div className="userinfo-container">
-                        <div /* TODO: add follow button */></div>
+                        <div></div>
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                     </div>
                     <PostDisplay usernames={[this.state.current]}/>
@@ -87,9 +176,7 @@ class Profile extends React.Component {
                 <div className='rowC'>
                     <div className="userinfo-container">
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
-                        {/* The changeBio function is being passed to the EditBio component, but is being bound
-                        to this component  (Profile) - so when changeBio() references "this" in its function, it will refer 
-                        to the Profile component's state and not the Edit component's state*/}
+                        {}
                         <EditBio changeBio={this.changeBio.bind(this)}/>
                     </div>
                     <div>
@@ -102,6 +189,6 @@ class Profile extends React.Component {
         else 
             return null;
     }
-}
+}*/
 
-export default Profile;
+export default Profile

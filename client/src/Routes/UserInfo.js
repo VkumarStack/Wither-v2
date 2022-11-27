@@ -6,7 +6,7 @@ class UserInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: window.location.pathname.split("/").pop(),
+            user: window.location.href.split("/").pop(),
         }
     }
 
