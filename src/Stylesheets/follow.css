@@ -1,0 +1,47 @@
+.Follow {
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.Follow div.follow-button, .Follow div.form-container {
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(61, 33, 33);
+    box-shadow: 5px 10px 5px rgb(36, 17, 17);
+}
+
+.Follow div.follow-button:hover, .Follow div.form-container:hover {
+    background-color: rgb(27, 25, 25);
+}
+
+.Follow div.follow-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: rgb(201, 197, 197);
+    font-weight: bold;
+    
+    height: 35px;
+    width: 200px;
+    margin: 10px;
+}
+
+.Follow button { 
+    height: 30px;
+    width: 35%;
+
+    color: black;
+    background-color: white;
+    font-size: 14px;
+    font-weight: bold;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.Follow button:hover, .Follow input:focus {
+    background-color: rgb(224, 231, 238);
+}

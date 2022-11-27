@@ -1,12 +1,11 @@
 import React from "react";
-import { ReactDOM } from "react";
 import '../Stylesheets/profile.css';
-import Post from './Post';
 import HeaderBar from './HeaderBar';
 import CreatePost from "./CreatePost";
 import EditBio from "./EditBio";
 import UserInfo from "./UserInfo";
 import PostDisplay from "./PostsDisplay";
+import Follow  from "./Follow";
 
 class Profile extends React.Component {
     // Assume props is the current user
@@ -36,6 +35,10 @@ class Profile extends React.Component {
 
     changeBio(newBio) {
         this.setState({bio: newBio});
+    }
+
+    updateFollow() {
+        this.setState({followers: [...this.state.followers, this.state.user]});
     }
 
     render() {
@@ -74,8 +77,8 @@ class Profile extends React.Component {
             return (
                 <div className='rowC'>
                     <div className="userinfo-container">
-                        <div /* TODO: add follow button */></div>
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
+                        <Follow/>
                     </div>
                     <PostDisplay usernames={[this.state.current]}/>
                 </div>
@@ -89,7 +92,7 @@ class Profile extends React.Component {
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
                         {/* The changeBio function is being passed to the EditBio component, but is being bound
                         to this component  (Profile) - so when changeBio() references "this" in its function, it will refer 
-                        to the Profile component's state and not the Edit component's state*/}
+                        to the Profile component's state and not the Edit component's state */}
                         <EditBio changeBio={this.changeBio.bind(this)}/>
                     </div>
                     <div>

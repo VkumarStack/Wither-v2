@@ -16,6 +16,8 @@ class UserInfo extends React.Component {
             <div className="UserInfo">
                 <h1> @{this.state.user}</h1>
                 <h2></h2>
+                <h3> {this.props.followers.length} followers </h3>
+                <h2></h2>
                 <p> {this.props.bio} </p>
             </div>
         );
