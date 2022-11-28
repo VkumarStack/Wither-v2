@@ -14,7 +14,8 @@ class Follow extends React.Component {
         if (this.state.user === null)
             return;
         e.preventDefault();
-        let response = await fetch(`http://localhost:8080/users/${this.state.user}/follow`, {
+        console.log(this.props.current)
+        let response = await fetch(`http://localhost:8080/users/${this.props.current}/follow`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -43,14 +44,23 @@ class Follow extends React.Component {
         {
             // This is altering the parent component's (Profile) state, which causes it to re-render the UserInfo 
             // component with the new follower
-            this.props.updateFollow();
+            this.props.updateFollow(response.followed_List);
         }
+    }
+
+    checkFollowed() {
+        if (this.props.followers === null)
+            return;
+        if (this.props.followers.includes(this.state.user))
+            return "Unfollow";
+        return "Follow";
     }
 
     render() {
         return (
             <div className="Follow">
-                <div className="follow-button" onClick={(e) => this.handleSubmit(e)}> Follow </div>
+                <div className="follow-button" onClick={(e) => this.handleSubmit(e)}> { this.checkFollowed() } 
+                </div>
                     {   (this.state.errorMessage !== null) &&
                         <h1> {this.state.errorMessage} </h1>
                     }
