@@ -15,7 +15,7 @@ class Profile extends React.Component {
             user: sessionStorage.getItem("user"),
             current: window.location.pathname.split("/").pop(),
             bio: "",
-            followers: 0
+            followers: []
 
             // Fetch the database at the top-level and pass into EditBio and UserInfo as props
             // userinfo contains bio, followers, posts, and username
@@ -37,8 +37,8 @@ class Profile extends React.Component {
         this.setState({bio: newBio});
     }
 
-    updateFollow() {
-        this.setState({followers: [...this.state.followers, this.state.user]});
+    updateFollow(newFollowers) {
+        this.setState({followers: newFollowers});
     }
 
     render() {
@@ -78,7 +78,7 @@ class Profile extends React.Component {
                 <div className='rowC'>
                     <div className="userinfo-container">
                         <UserInfo bio={this.state.bio} followers={this.state.followers}/>
-                        <Follow/>
+                        <Follow current={this.state.current} followers={this.state.followers} updateFollow={this.updateFollow.bind(this)}/>
                     </div>
                     <PostDisplay usernames={[this.state.current]}/>
                 </div>
