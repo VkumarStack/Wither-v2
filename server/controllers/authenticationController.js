@@ -42,7 +42,7 @@ exports.testFunction = function() {
 }
 
 exports.createToken = (user) => {
-    return jwt.sign({username: user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "2h"});
+    return jwt.sign({username: user}, (process.env.ACCESS_TOKEN_SECRET || "SECRET"), {expiresIn: "2h"});
 }
 
 exports.compareToken = async function compareToken(req, res, next) {
@@ -54,7 +54,7 @@ exports.compareToken = async function compareToken(req, res, next) {
     }
     else {
         try {
-            const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+            const payload = jwt.verify(token, (process.env.ACCESS_TOKEN_SECRET || "SECRET"));
             if (req.body.username.toLowerCase() === payload.username.toLowerCase())
                 next();
             else
