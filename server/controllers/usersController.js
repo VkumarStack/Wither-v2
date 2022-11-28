@@ -88,7 +88,7 @@ exports.followUser = async (req, res) => {
       if(g >= 0)
       {
         //console.log("test");
-        userFollowing.a_following.splice(n, 1);
+        userFollowing.a_following.splice(g, 1);
       }
       else
       {
