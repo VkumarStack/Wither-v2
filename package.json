@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "updateDependencies": "cd client && npm install && cd ../server && npm install",
     "buildClient": "cd client && npm run build",
-    "init": "npm run updateDependencies && npm run buildClient && npm install -g serve",
-    "startClient": "cd client && serve -s build",
+    "init": "npm run updateDependencies",
+    "startClient": "cd client && npm start",
     "startServer": "cd server && npm run start",
     "start": "npm-run-all --parallel startServer startClient"
   },
