@@ -14,14 +14,14 @@ function Profile(props) {
     let { id } = useParams();
     const [current, setCurrent] = useState(id);
     const [bio, setBio] = useState("");
-    const [followers, setFollowers] = useState(0);
+    const [followers, setFollowers] = useState([]);
 
     useEffect(() => {
         setCurrent(id);
     }, [id]);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/users/${current}`)
+        fetch(`https://wither.onrender.com/users/${current}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
@@ -53,6 +53,7 @@ function Profile(props) {
                     <div className="userinfo-container">
                         <div></div>
                         <UserInfo bio={bio} followers={followers}/>
+                        <Follow current={current} followers={followers} updateFollow={setFollowers}></Follow>
                     </div>
                     <PostDisplay usernames={[current]}/>
                 </div>
@@ -114,7 +115,7 @@ class Profile extends React.Component {
 
     componentDidMount() {
         // fetch defaults to a GET request, so no need to specify any other parameters
-        fetch(`http://localhost:8080/users/${this.state.current}`)
+        fetch(`https://wither.onrender.com/users/${this.state.current}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data);

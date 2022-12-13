@@ -16,7 +16,7 @@ class EditBio extends React.Component {
         if (this.state.user === null)
             return;
         e.preventDefault();
-        let response = await fetch(`http://localhost:8080/users/${this.state.user}/bio`, {
+        let response = await fetch(`https://wither.onrender.com/users/${this.state.user}/bio`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',

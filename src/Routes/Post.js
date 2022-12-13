@@ -24,7 +24,7 @@ class Post extends React.Component {
         console.log("hit");
         if (user === null || token === null)
             return;
-        let response = await fetch(`http://localhost:8080/posts/${id}`, {
+        let response = await fetch(`https://wither.onrender.com/posts/${id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',

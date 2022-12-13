@@ -12,7 +12,7 @@ class SignIn extends React.Component {
     
     async handleSubmit(e) {
         e.preventDefault();
-        let response = await fetch("http://localhost:8080/auth", {
+        let response = await fetch("https://wither.onrender.com/auth", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

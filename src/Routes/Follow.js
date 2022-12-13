@@ -15,7 +15,7 @@ class Follow extends React.Component {
             return;
         e.preventDefault();
         console.log(this.props.current)
-        let response = await fetch(`http://localhost:8080/users/${this.props.current}/follow`, {
+        let response = await fetch(`https://wither.onrender.com/users/${this.props.current}/follow`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
