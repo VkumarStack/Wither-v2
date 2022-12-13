@@ -1,10 +1,11 @@
-# CS35L Group Project
-## Group Members:
-Vivek Kumar - VkumarStack
-Ashley Loong - ashloong
-George Zevada - gjzev
-Wonjin Lee - wonjinlee1202
-Nick Johnson - OnceCrowned & Nick Johnson (repository shows Github commit authors)
+Individual continuation of the Wither project
+
+## Original Group Members:
+- Vivek Kumar - VkumarStack
+- Ashley Loong - ashloong
+- George Zevada - gjzev
+- Wonjin Lee - wonjinlee1202
+- Nick Johnson - OnceCrowned & Nick Johnson (repository shows Github commit authors)
 
 ## Setup Instructions:
 - Clone the repository and ensure that [NodeJS and Node Package Manager](https://nodejs.org/en/download/) is installed on your device.
