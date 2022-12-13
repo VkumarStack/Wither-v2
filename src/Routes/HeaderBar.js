@@ -3,6 +3,7 @@ import '../Stylesheets/headerbar.css';
 import Register from "./Register";
 import SearchBar from './SearchBar';
 import SignIn from './SignIn';
+import { Link } from "react-router-dom";
 import CreatePost from "./CreatePost";
 
 class HeaderBar extends React.Component {
@@ -18,7 +19,7 @@ class HeaderBar extends React.Component {
                             <path d="M2775 954 c-102 -23 -199 -66 -324 -145 l-110 -70 36 -57 c156 -245 247 -374 304 -430 113 -112 236 -182 394 -225 65 -18 106 -21 220 -21 122 1 151 4 230 28 133 40 382 182 371 211 -9 24 -228 359 -264 405 -109 137 -262 238 -438 291 -94 29 -319 35 -419 13z m325 -299 c81 -21 172 -70 230 -122 46 -42 150 -175 150 -193 0 -13 -86 -32 -165 -37 -146 -9 -293 43 -403 143 -61 55 -150 179 -138 192 30 30 235 41 326 17z"/>
                             </g>
                         </svg>
-                        <h1> <a href={window.location.origin}> Wither </a> </h1>
+                        <Link to={`/`}> <h1> Wither </h1> </Link>
                     </div>
                     <SearchBar/>
                     <div className="user-buttons">
@@ -37,11 +38,11 @@ class HeaderBar extends React.Component {
                             <path d="M2775 954 c-102 -23 -199 -66 -324 -145 l-110 -70 36 -57 c156 -245 247 -374 304 -430 113 -112 236 -182 394 -225 65 -18 106 -21 220 -21 122 1 151 4 230 28 133 40 382 182 371 211 -9 24 -228 359 -264 405 -109 137 -262 238 -438 291 -94 29 -319 35 -419 13z m325 -299 c81 -21 172 -70 230 -122 46 -42 150 -175 150 -193 0 -13 -86 -32 -165 -37 -146 -9 -293 43 -403 143 -61 55 -150 179 -138 192 30 30 235 41 326 17z"/>
                             </g>
                         </svg>
-                        <h1> <a href={window.location.origin}> Wither </a> </h1>
+                        <Link to={`/`}> <h1> Wither </h1> </Link>
                     </div>
                     <SearchBar/>
                     <div className="user-buttons">
-                        { (GetUserUrl() !== sessionStorage.getItem("user")) && 
+                        { (this.props.profile !== sessionStorage.getItem("user")) && 
                             <YourProfile/>
                         }
                         <Logout/>
@@ -64,12 +65,11 @@ function YourProfile(props) {
     let user = sessionStorage.getItem("user")
     return (
         <div className="YourProfile">
-            <div className="profile-button button"
-            onClick={() => {
-                window.location.replace(`/users/${user}`);
-            }}>
-                Profile       
-            </div>
+            <Link to={`/users/${user}`}>
+                <div className="profile-button button">
+                    Profile       
+                </div>
+            </Link>
         </div>
     );
 }
