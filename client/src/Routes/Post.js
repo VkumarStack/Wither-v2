@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"
 import Moment from "moment"
 import { ReactDOM } from "react";
 import "../Stylesheets/post.css"
@@ -52,9 +53,9 @@ class Post extends React.Component {
         if (!this.state.withered)
             return (
                 <div className="Post">
-                    <a href={window.location.origin + "/users/" + this.state.user}>
+                    <Link to={`/users/${this.state.user}`}>
                         <h2> @{this.state.user} </h2>
-                    </a>
+                    </Link>
                     <p> {this.state.text} </p>
                     <div className="likes-dislikes">
                         <div className="like-info">
@@ -89,9 +90,9 @@ class Post extends React.Component {
         else
             return (
                 <div className="Post">
-                    <a href={window.location.origin + "/users/" + this.state.user}>
+                    <Link to={`/users/${this.state.user}`}>
                         <h2> @{this.state.user} </h2>
-                    </a>
+                    </Link>
                     <p className="withered"> This post has been withered. </p>
                 </div>
             );
