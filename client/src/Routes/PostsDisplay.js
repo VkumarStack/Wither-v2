@@ -39,11 +39,11 @@ class PostDisplay extends React.Component {
         }
         else
         {
-            let postIDs = await fetch("http://localhost:8080/posts");
+            let postIDs = await fetch("https://wither.onrender.com/posts");
             postIDs = await postIDs.json();
             if (!postIDs.Error)
             {
-                const urls = postIDs.posts.map((id) => fetch(`http://localhost:8080/posts/${id}`));
+                const urls = postIDs.posts.map((id) => fetch(`https://wither.onrender.com/posts/${id}`));
                 const posts = await Promise.all(urls);
                 const json = posts.map((reponse) => reponse.json());
                 const data = await Promise.all(json);
@@ -59,11 +59,11 @@ class PostDisplay extends React.Component {
     }
 
     async postsFromUser(user) {
-        let response = await fetch(`http://localhost:8080/users/${user}`);
+        let response = await fetch(`https://wither.onrender.com/users/${user}`);
         response = await response.json();
         if (!response.Error)
         {
-            let urls = response.a_posts.map((id) => fetch(`http://localhost:8080/posts/${id}`));
+            let urls = response.a_posts.map((id) => fetch(`https://wither.onrender.com/posts/${id}`));
             const posts = await Promise.all(urls);
             const json = posts.map((response) => response.json());
             const data = await Promise.all(json);

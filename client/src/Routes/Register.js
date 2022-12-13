@@ -15,7 +15,7 @@ class Register extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        let response = await fetch("http://localhost:8080/users", {
+        let response = await fetch("https://wither.onrender.com/users", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

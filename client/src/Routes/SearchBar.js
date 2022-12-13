@@ -12,7 +12,7 @@ class SearchBar extends React.Component {
     }
     
     componentDidMount() {
-        fetch('http://localhost:8080/users')
+        fetch('https://wither.onrender.com/users')
             .then((response) => response.json()) 
             .then((data) => this.setState({ users: data.users}));
     }
@@ -20,7 +20,7 @@ class SearchBar extends React.Component {
     matchUsers(expression) {
         if (this.state.users === null)
         {
-            fetch('http://localhost:8080/users')
+            fetch('https://wither.onrender.com/users')
             .then((response) => response.json()) 
             .then((data) => this.setState({ users: data.users}));
             return;

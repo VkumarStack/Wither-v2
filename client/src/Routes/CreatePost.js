@@ -13,7 +13,7 @@ class CreatePost extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        let response = await fetch("http://localhost:8080/posts/", {
+        let response = await fetch("https://wither.onrender.com/posts/", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

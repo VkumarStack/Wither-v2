@@ -21,7 +21,7 @@ class Home extends React.Component {
         let user = sessionStorage.getItem("user");
         if (user !== null)
         {
-            let response = await fetch(`http://localhost:8080/users/${user}`);
+            let response = await fetch(`https://wither.onrender.com/users/${user}`);
             response = await response.json();
             console.log(response);
             if (!response.Error)
