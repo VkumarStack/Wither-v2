@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/vkumarstack.github.io/Wither-v2/static/css/main.563def6c.css",
-    "main.js": "/vkumarstack.github.io/Wither-v2/static/js/main.c4053068.js",
-    "static/js/787.c4e7f8f9.chunk.js": "/vkumarstack.github.io/Wither-v2/static/js/787.c4e7f8f9.chunk.js",
-    "static/media/Beccaria.ttf": "/vkumarstack.github.io/Wither-v2/static/media/Beccaria.65fec4b293ad45e18d66.ttf",
-    "index.html": "/vkumarstack.github.io/Wither-v2/index.html",
-    "main.563def6c.css.map": "/vkumarstack.github.io/Wither-v2/static/css/main.563def6c.css.map",
-    "main.c4053068.js.map": "/vkumarstack.github.io/Wither-v2/static/js/main.c4053068.js.map",
-    "787.c4e7f8f9.chunk.js.map": "/vkumarstack.github.io/Wither-v2/static/js/787.c4e7f8f9.chunk.js.map"
+    "main.css": "/Wither-v2/static/css/main.4bff9a7f.css",
+    "main.js": "/Wither-v2/static/js/main.1e56642b.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/Wither-v2/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Beccaria.ttf": "/Wither-v2/static/media/Beccaria.65fec4b293ad45e18d66.ttf",
+    "index.html": "/Wither-v2/index.html",
+    "main.4bff9a7f.css.map": "/Wither-v2/static/css/main.4bff9a7f.css.map",
+    "main.1e56642b.js.map": "/Wither-v2/static/js/main.1e56642b.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/Wither-v2/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.563def6c.css",
-    "static/js/main.c4053068.js"
+    "static/css/main.4bff9a7f.css",
+    "static/js/main.1e56642b.js"
   ]
 }
