@@ -24,6 +24,7 @@ router.get("/", posts_controller.getPosts);
 // current time as the date and the author being set to the username passed in the request body.
 // It should check to see if the User actually exists in the database (and if they don't, then 
 // don't create the post and return an Error JSON object) before setting the post author.
+router.post("/", posts_controller.validatePost);
 router.post("/", auth_controller.compareToken);
 router.post("/", posts_controller.createPost);
 

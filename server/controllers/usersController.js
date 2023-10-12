@@ -1,43 +1,32 @@
 const User = require("../models/usersmod");
 const Authentication = require("../controllers/authenticationController");
-const { request } = require("express");
+const helper = require("../controllers/helper");
 
-exports.idFromUsername = async function idFromUsername(username){
+exports.userExists = async function userExists(username, session = null){
   try{
-    const field = "_id";
-    const query = {a_username: username.toLowerCase()};
+    const query = {a_username: {$regex: "^" + username + "$", $options: 'i'} };
+    
+    let user;
+    if (session) {
+      user = await User.findOne(query).session(session)
+    } else {
+      user = await User.findOne(query);
+    }
 
-    const id = await User.distinct(field, query);
-    if (id.length === 0)
-      return false;
-    return id;
-  }
-  catch {
-    return false;
-  }
-}
-
-exports.userExists = async function userExists(username){
-  try{
-    const query = {a_username: username.toLowerCase()};
-
-    const user = await User.findOne(query).select("-a_password");
-
-    if(user === null)
+    if (user === null)
       return false;
 
     return user;
   }
   catch {
-    console.log("Database error");
     return false;
   }
 }
 
 exports.getUserID = async function getUserID(req, res){
   try{
-    const query = {a_username: req.params.userID.toLowerCase()};
-    const user = await User.findOne(query, {a_password: 0});
+    const query = {a_username: {$regex: "^" + req.params.userID + "$", $options: 'i'}};
+    const user = await User.findOne(query);
     if (user === null)
     {
       res.json({Error: "User not found"});
@@ -53,10 +42,21 @@ exports.getUserID = async function getUserID(req, res){
 
 exports.getUsers = async (req, res) => {
   try{
-    const response = await User.find({}).select("a_username -_id");
-    let test = [];
-    response.forEach(element => test.push(element.a_username));
-    res.send({users: test});
+    let queryConditions = {}
+    if (req.body.pattern) {
+      queryConditions.a_username = { $regex: req.body.pattern, $options: 'i' };
+    }
+    if (req.body.cursor) {
+      queryConditions._id = { $lt: req.body.cursor };
+    }
+    const response = await User.find(queryConditions).sort({ _id: -1}).limit(10).select("-a_password");
+    let cursor = null;
+    let users = [];
+    if (response.length != 0) {
+      cursor = response[response.length - 1]._id;
+      response.forEach(element => users.push(element));
+    }
+    res.send({users: users, cursor: cursor});
   }
   catch {
     res.send({Error: "Could not fetch all users"});
@@ -64,48 +64,78 @@ exports.getUsers = async (req, res) => {
 };
 
 //Following a user
-
 exports.followUser = async (req, res) => {
-   try
-   {
-    const userFollowing = await exports.userExists(req.body.username);
-    let userFollowed = await exports.userExists(req.params.userID);
-    if(userFollowing !== false && userFollowed !== false)
-    {
-      let n = userFollowed.a_followers.indexOf(userFollowing.a_username);
-      let g = userFollowing.a_following.indexOf(userFollowed.a_username);
-      //console.log(n);
-      if(n >= 0)
-      {
-        //console.log("test");
-        userFollowed.a_followers.splice(n, 1);
-      }
-      else
-      {
-        userFollowed.a_followers.push(userFollowing.a_username);
-        
-      }
-      if(g >= 0)
-      {
-        //console.log("test");
-        userFollowing.a_following.splice(g, 1);
-      }
-      else
-      {
-        userFollowing.a_following.push(userFollowed.a_username);
-      }
-      await userFollowed.save();
-      await userFollowing.save();
-      res.json({ followed_List: userFollowed.a_followers, following_list: userFollowing.a_following });
-     // res.json({ following_List: userFollowing.a_following });
+  const followUser = async(req, res, session) => {
+    const userFollowing = req.body.username && await User.findOne({a_username: req.body.username}).session(session);
+    const userFollowed = await User.findOne({a_username: req.params.userID}).session(session);
+    console.log(userFollowing._id)
+    console.log(userFollowed._id)
+    if (!(userFollowing && userFollowed) || (userFollowing._id.equals(userFollowed._id))) {
+      throw new Error('Invalid users')
     }
-    else
-      res.json({Error: "User doesn't exist"}); 
+
+    await sleep(5000);
+    const i = userFollowing.a_following.indexOf(userFollowed.a_username);
+    const j = userFollowed.a_followers.indexOf(userFollowing.a_username);
+
+
+    // User is already in follow list, so an unfollow
+    if (i >= 0) {
+      userFollowing.a_following.splice(i, 1);
+      userFollowed.a_followers.splice(j, 1);
+      console.log(userFollowing.a_following)
+      console.log(userFollowed.a_followers)
+    } // User is not in follow list, so a follow
+    else {
+      userFollowing.a_following.push(userFollowed.a_username);
+      userFollowed.a_followers.push(userFollowing.a_username);
+    }
+
+    await userFollowed.save({ session });
+    await userFollowing.save({ session });
+    res.json({ following_List: userFollowing.a_following });
+    return;
+  }
+  let result = await helper.handleTransaction(followUser, req, res);
+  if (!result) {
+    res.json({Error: "Could not follow user"});
+  }
+  /*
+  const session = await Mongoose.connection.startSession(); 
+  try
+   {
+    session.startTransaction();
+    const userFollowing = req.body.username && await User.findOne({a_username: req.body.username}).session(session);
+    const userFollowed = await User.findOne({a_username: req.params.userID}).session(session);
+    if (!(userFollowing && userFollowed)) {
+      throw new Error('Invalid users')
+    }
+    const i = userFollowing.a_following.indexOf(userFollowed.a_username);
+    const j = userFollowed.a_followers.indexOf(userFollowing.a_username);
+
+    // User is already in follow list, so an unfollow
+    if (i >= 0) {
+      userFollowing.a_following.splice(i, 1);
+      userFollowed.a_followers.splice(j, 1);
+    } // User is not in follow list, so a follow
+    else {
+      userFollowing.a_following.push(userFollowed.a_username);
+      userFollowed.a_followers.push(userFollowing.a_username);
+    }
+
+    await userFollowed.save({ session });
+    await userFollowing.save({ session });
+    await session.commitTransaction();
+    await session.endSession();
+    res.json({ following_List: userFollowing.a_following });
   }
   catch
   {
+    await session.abortTransaction();
+    await session.endSession();
     res.json({Error: "Could not follow/unfollow user"});
   }
+  */
 }
 
 //Edit bio
@@ -119,21 +149,15 @@ try {
   next();
   } 
   catch {
-    res.json({Error: "Something went wrong when editing the bio"});
+    res.json({Error: "Invalid bio length"});
   }
 }
+
 exports.editBio = async (req, res) => {
   try {
-    let user = await exports.userExists(req.params.userID);
-    if(user === false)
-    {
-      res.json({Error: "User doesn't exist to edit bio"});
-      return;
+    const data = await User.findOneAndUpdate({a_username: req.params.userID}, {a_bio: req.body.bio}, {new : true});
+    res.json(data);
     }
-    user.a_bio = req.body.bio;
-    user.save();
-    res.json({bio: user.a_bio});
-      }
   catch
   {
     res.json({Error: "Bio failed to update"});
@@ -141,35 +165,48 @@ exports.editBio = async (req, res) => {
 
 }
   
+exports.validateRegistration = async(req, res, next) => {
+  try {
+    const usernameReq = new RegExp("[A-Za-z][A-Za-z0-9_]{2,14}")
+    const passwordReq = new RegExp("(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,128}")
+    if (req.body.username.match(usernameReq) && req.body.username.match(usernameReq)[0].length == req.body.username.length &&
+        req.body.password.match(passwordReq) && req.body.password.match(passwordReq)[0].length == req.body.password.length) {
+      next();
+      return;
+    }
+    else {
+      throw new Error("Invalid credentials");
+    }
+  }
+  catch {
+    res.json({Error: "Invalid regisration"});
+  }
 
+}
 // Split this so that one function checks if the user already exists 
 // and the next adds them to the database
 exports.createUser = async function createUser(req, res) {
   try {
     userdetails = {
-      a_username: req.body.username.toLowerCase(), 
+      a_username: req.body.username, 
       a_password: req.body.password, 
       a_bio: "Create a Bio",
       a_posts: [],
       a_followers: [],
       a_following: []
     }
-    var user = new User(userdetails);
-    if (await exports.userExists(req.body.username.toLowerCase())) {
-      res.json({Error: "User already exists"})
-      return;
+    const result = await User.updateOne({a_username: {$regex: "^" + userdetails.a_username + "$", $options: 'i'}}, { $setOnInsert: userdetails }, { upsert: true });
+    if (result.matchedCount > 0) {
+      throw new Error('User already exists')
     }
-    else {
-      await user.save();
-      const token = Authentication.createToken(req.body.username);
-      res.json({a_username: userdetails.a_username, 
-                a_bio: userdetails.a_bio,
-                a_posts: userdetails.a_posts, 
-                a_followers: userdetails.a_followers,
-                token: token});
-      return;
-    }
+    
+    const token = Authentication.createToken(req.body.username);
+    res.json({a_username: req.body.username, token: token});
   } catch {
-    res.json({Error: "Something went wrong with the Database"});
+    res.json({Error: "User already exists"});
   }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

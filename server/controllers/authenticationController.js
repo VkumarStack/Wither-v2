@@ -14,7 +14,7 @@ exports.encryptPassword = async function encryptPassword(req, res, next) {
 
 exports.logIn = async function logIn(req, res, next) {
     try {
-        const user = await User.findOne({a_username: req.body.username.toLowerCase()});
+        const user = await User.findOne({a_username: req.body.username}).select("+a_password");
         if (user === null)
         {
             res.json({access: false});
@@ -37,10 +37,6 @@ exports.logIn = async function logIn(req, res, next) {
     }
 }
 
-exports.testFunction = function() {
-    return "Test";
-}
-
 exports.createToken = (user) => {
     return jwt.sign({username: user}, (process.env.ACCESS_TOKEN_SECRET || "SECRET"), {expiresIn: "2h"});
 }
@@ -48,6 +44,7 @@ exports.createToken = (user) => {
 exports.compareToken = async function compareToken(req, res, next) {
     const auth = req.headers['authorization'];
     const token = auth && auth.split(' ')[1];
+    console.log(token)
     if (token === null) {
         res.json({Error: "No token provided", TokenError: true});
         return;

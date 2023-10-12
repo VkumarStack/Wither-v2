@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
 var authRouter = require ('./routes/auth');
@@ -16,8 +15,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
-const { createUser } = require('./controllers/usersController');
-const { createPost } = require('./controllers/postsController');
 const mongoDB = process.env.DATABASE_URL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -30,7 +27,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/auth', authRouter);

@@ -23,7 +23,6 @@ router.get("/", users_controller.getUsers);
 // i.e. { username: "joebruin", bio: "biography", posts: [58909801, 1952158] }
 //DONE
 router.get("/:userID", users_controller.getUserID);
-// res.send(users_controller.getUserID););
 
 // We also need a router.put("/:userID") for when the user updates their bio or follows another user
 
@@ -36,6 +35,7 @@ router.put("/:userID/bio", users_controller.validateBio);
 router.put("/:userID/bio", users_controller.editBio);
 // We need one more function that checks to make sure the registration data is valid (test the username and 
 // password with a Regex expression)
+router.post("/", users_controller.validateRegistration);
 router.post("/", auth_controller.encryptPassword);
 router.post("/", users_controller.createUser);
 

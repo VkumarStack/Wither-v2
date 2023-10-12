@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 // the users that they are following
 const UserModelSchema = new Schema({
     a_username: {type: String, required: true},
-    a_password: {type: String, required: true},
+    a_password: {type: String, required: true, select: false},
     a_bio: {type: String},
     a_posts: [{type: Schema.Types.ObjectId, ref: "Post"}],
     a_followers: [{type: String}],
