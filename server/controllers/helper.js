@@ -14,7 +14,6 @@ exports.handleTransaction = async(f, req, res) => {
       await session.commitTransaction();
       success = true;
     } catch(e) {
-      console.log(e);
       if (e.codeName == "WriteConflict") {
         await session.abortTransaction();
         currentTry++;

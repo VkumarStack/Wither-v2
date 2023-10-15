@@ -53,9 +53,13 @@
     justify-content: center;
     gap: 10px;
     padding: 0px 10px;
-    width: 30%;
+    width: min(450px, 80%);
 }
 
+
+.HeaderBar div.Logout {
+    width: min(200px, 100%);
+}
 
 .HeaderBar div.Logout .logout-button {
     border-radius: 5px;
@@ -68,11 +72,14 @@
     justify-content: center;
     align-items: center;
     height: 35px;
-    width: 200px;
 }
 
 .HeaderBar div.Logout .logout-button:hover {
     background-color: rgb(61, 33, 33);
+}
+
+.HeaderBar div.YourProfile {
+    width: min(200px, 100%);
 }
 
 .HeaderBar div.YourProfile .profile-button {
@@ -86,7 +93,8 @@
     justify-content: center;
     align-items: center;
     height: 35px;
-    width: 200px;
+    width: min(100%, 200px);
+    width: 100%;
 }
 
 .HeaderBar div.YourProfile .profile-button:hover {

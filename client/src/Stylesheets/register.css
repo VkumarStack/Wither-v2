@@ -3,6 +3,7 @@
 
     display: flex;
     flex-direction: column;
+    width: min(100%, 200px);    
 }
 
 .Register .register-button, .Register .form-container {
@@ -23,7 +24,6 @@
     align-items: center;
     
     height: 35px;
-    width: 200px;
 }
 
 .Register form {
@@ -64,7 +64,7 @@
 
 .Register button {
     height: 30px;
-    width: 50%;
+    width: 100%;
 
     color: black;
     background-color: white;

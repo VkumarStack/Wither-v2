@@ -16,7 +16,7 @@ class EditBio extends React.Component {
         if (this.state.user === null)
             return;
         e.preventDefault();
-        let response = await fetch(`https://wither.onrender.com/users/${this.state.user}/bio`, {
+        let response = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/users/${this.state.user}/bio`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +25,6 @@ class EditBio extends React.Component {
             body: JSON.stringify({username: this.state.user, bio: e.target.bio.value})
         })
         response = await response.json();
-        console.log(response);
         if (response.Error)
         {
             // If the user is logged in but their sign in token is bad (sign in token expires after 2 hours), log them out and reload the page
@@ -45,7 +44,7 @@ class EditBio extends React.Component {
         {
             // This is altering the parent component's (Profile) state, which causes it to re-render the UserInfo 
             // component with the new bio
-            this.props.changeBio(response.bio);
+            this.props.changeBio(response.a_bio);
         }
     }
 

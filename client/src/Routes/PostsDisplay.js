@@ -8,82 +8,53 @@ class PostDisplay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: {},
+            posts: [],
         };
     }
 
-    async componentDidMount() {
-        await this.getPosts();
+    componentDidMount() {
+        this.getPosts();
     }
 
-    async componentDidUpdate(prevProps) {
-        if (this.props.usernames !== prevProps.usernames)
-            await this.getPosts();
+    componentDidUpdate(prevProps) {
+        let newUsernames = false;
+        if ((this.props.usernames && !prevProps.usernames) || (!this.props.usernames && prevProps.usernames)) {
+            newUsernames = true;
+        } else if (this.props.usernames && prevProps.usernames) {
+            if (this.props.usernames.length !== prevProps.usernames.length) {
+                newUsernames = true;
+            } else {
+                for (let i = 0; i < this.props.usernames.length; i++) {
+                    if (this.props.usernames[i] !== prevProps.usernames[i]) {
+                        newUsernames = true;
+                    }
+                }
+            }
+        }
+
+        if (newUsernames) {
+            this.setState({posts: []});
+            this.getPosts();
+        }
     }
 
     async getPosts() {
-        if (this.props.usernames)
-        {
-            const requests = this.props.usernames.map((username) => this.postsFromUser(username));
-            const postArrays = await Promise.all(requests); // An array of arrays containing post information
-            let postMapping = {};
-            for (let i = 0; i < postArrays.length; i++)
-            {
-                for (let j = 0; j < postArrays[i].length; j++)
-                {
-                    postMapping[postArrays[i][j]._id] = postArrays[i][j];
-                }
-            }
-            this.setState({posts: postMapping})
-            
+        let usernamePattern = "";
+        if (this.props.usernames && this.props.usernames.length > 0) {
+            const groups = this.props.usernames.map((name) => `(${name})`)
+            usernamePattern = groups.join("|")
         }
-        else
-        {
-            let postIDs = await fetch("https://wither.onrender.com/posts");
-            postIDs = await postIDs.json();
-            if (!postIDs.Error)
-            {
-                const urls = postIDs.posts.map((id) => fetch(`https://wither.onrender.com/posts/${id}`));
-                const posts = await Promise.all(urls);
-                const json = posts.map((reponse) => reponse.json());
-                const data = await Promise.all(json);
-                let postMapping = {}
-                for (let i = 0; i < data.length; i++)
-                {
-                    if (!data[i].Error)
-                        postMapping[data[i]._id] = data[i];
-                }
-                this.setState({ posts: postMapping});
-            }
-        }
-    }
-
-    async postsFromUser(user) {
-        let response = await fetch(`https://wither.onrender.com/users/${user}`);
-        response = await response.json();
-        if (!response.Error)
-        {
-            let urls = response.a_posts.map((id) => fetch(`https://wither.onrender.com/posts/${id}`));
-            const posts = await Promise.all(urls);
-            const json = posts.map((response) => response.json());
-            const data = await Promise.all(json);
-            return data;
-        }
-        return [];
-
+        let posts = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/posts?pattern=${usernamePattern}`)
+        posts = await posts.json();
+        this.setState({posts: posts.posts});
     }
 
     generatePosts() {
-        if (Object.keys(this.state.posts).length === 0)
+        if (this.state.posts.length === 0)
             return;
-        const sorted = Object.values(this.state.posts).sort( (a, b) => {
-            return new Date(b.a_dateCreated) - new Date(a.a_dateCreated);
-        });
-        let posts = sorted.map((post) => {
-            let props = { id: post._id, user: post.a_username, text: post.a_text, date: post.a_dateCreated, likes: post.a_likes, dislikes: post.a_dislikes };
-            return (<Post post={props} key={post._id}/>);
-        })
-        console.log(posts);
+        
+        const posts = this.state.posts.map((post) => <Post post={post} key={post._id}/>)
+
         return posts;
         
     }

@@ -12,7 +12,7 @@ class SignIn extends React.Component {
     
     async handleSubmit(e) {
         e.preventDefault();
-        let response = await fetch("https://wither.onrender.com/auth", {
+        let response = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + "/auth", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

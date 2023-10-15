@@ -1,6 +1,7 @@
 const User = require("../models/usersmod");
 const Authentication = require("../controllers/authenticationController");
 const helper = require("../controllers/helper");
+const PAGINATION_LENGTH = 10;
 
 exports.userExists = async function userExists(username, session = null){
   try{
@@ -43,17 +44,19 @@ exports.getUserID = async function getUserID(req, res){
 exports.getUsers = async (req, res) => {
   try{
     let queryConditions = {}
-    if (req.body.pattern) {
-      queryConditions.a_username = { $regex: req.body.pattern, $options: 'i' };
+    if (req.query.pattern) {
+      queryConditions.a_username = { $regex: req.query.pattern, $options: 'i' };
     }
-    if (req.body.cursor) {
-      queryConditions._id = { $lt: req.body.cursor };
+    if (req.query.cursor) {
+      queryConditions._id = { $lt: req.query.cursor };
     }
-    const response = await User.find(queryConditions).sort({ _id: -1}).limit(10).select("-a_password");
+    const response = await User.find(queryConditions).sort({ _id: -1}).limit(PAGINATION_LENGTH).select("-a_password");
     let cursor = null;
     let users = [];
     if (response.length != 0) {
-      cursor = response[response.length - 1]._id;
+      if (response.length == PAGINATION_LENGTH) {
+        cursor = response[response.length - 1]._id;
+      }
       response.forEach(element => users.push(element));
     }
     res.send({users: users, cursor: cursor});
@@ -68,13 +71,10 @@ exports.followUser = async (req, res) => {
   const followUser = async(req, res, session) => {
     const userFollowing = req.body.username && await User.findOne({a_username: req.body.username}).session(session);
     const userFollowed = await User.findOne({a_username: req.params.userID}).session(session);
-    console.log(userFollowing._id)
-    console.log(userFollowed._id)
     if (!(userFollowing && userFollowed) || (userFollowing._id.equals(userFollowed._id))) {
       throw new Error('Invalid users')
     }
 
-    await sleep(5000);
     const i = userFollowing.a_following.indexOf(userFollowed.a_username);
     const j = userFollowed.a_followers.indexOf(userFollowing.a_username);
 
@@ -83,8 +83,6 @@ exports.followUser = async (req, res) => {
     if (i >= 0) {
       userFollowing.a_following.splice(i, 1);
       userFollowed.a_followers.splice(j, 1);
-      console.log(userFollowing.a_following)
-      console.log(userFollowed.a_followers)
     } // User is not in follow list, so a follow
     else {
       userFollowing.a_following.push(userFollowed.a_username);
@@ -93,7 +91,8 @@ exports.followUser = async (req, res) => {
 
     await userFollowed.save({ session });
     await userFollowing.save({ session });
-    res.json({ following_List: userFollowing.a_following });
+    // Return all users the current user is following as well as all users that are following the followee
+    res.json({ following: userFollowing.a_following, followers: userFollowed.a_followers });
     return;
   }
   let result = await helper.handleTransaction(followUser, req, res);
@@ -205,8 +204,4 @@ exports.createUser = async function createUser(req, res) {
   } catch {
     res.json({Error: "User already exists"});
   }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }

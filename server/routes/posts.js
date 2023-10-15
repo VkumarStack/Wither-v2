@@ -15,7 +15,7 @@ router.get("/:postID", posts_controller.getPostID);
 //GET all posts
 // This should return an array of Object ID's for all posts in the database
 // DONE
-router.get("/", posts_controller.getPosts);
+router.get("/:pattern?:cursor?", posts_controller.getPosts);
 
 //POST new post 
 // Request body should contain: username and text

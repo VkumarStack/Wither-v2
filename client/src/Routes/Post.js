@@ -1,30 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import Moment from "moment"
-import { ReactDOM } from "react";
 import "../Stylesheets/post.css"
 
 class Post extends React.Component {
     constructor(props) {
         // Props: Post ID (to use for backend calls), User, Text Content, Number of likes, Number of Dislikes
         super(props)
-        
         this.state = {
-            id: this.props.post.id,
-            user: this.props.post.user, 
-            text: this.props.post.text,
-            date: this.props.post.date,
-            likes: this.props.post.likes,
-            dislikes: this.props.post.dislikes,
+            id: this.props.post._id || "",
+            user: this.props.post.a_username || "", 
+            text: this.props.post.a_text || "",
+            date: this.props.post.createdAt || "",
+            likes: this.props.post.a_likes || [],
+            dislikes: this.props.post.a_dislikes || [],
             withered: false
         };
+
     }
 
     async likeOrDislike(like, id, user, token) {
-        console.log("hit");
         if (user === null || token === null)
             return;
-        let response = await fetch(`https://wither.onrender.com/posts/${id}`, {
+        let response = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/posts/${id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -33,14 +31,13 @@ class Post extends React.Component {
             body: JSON.stringify({username: user, boolean: like})
         })
         response = await response.json();
-        console.log(response);
         if (!response.Error) {
             if (response.Deleted)
             {
                 this.setState({ withered: true});
                 return;
             }
-            this.setState({ likes: response.likes, dislikes: response.dislikes});
+            this.setState({ likes: response.a_likes, dislikes: response.a_dislikes});
         }
         else if (response.Error && response.TokenError)
         {
@@ -60,7 +57,7 @@ class Post extends React.Component {
                     <div className="likes-dislikes">
                         <div className="like-info">
                             <svg 
-                            onClick={(e) => {this.likeOrDislike(true, this.state.id, sessionStorage.getItem("user"), sessionStorage.getItem("token"))}}
+                            onClick={(e) => {this.likeOrDislike("true", this.state.id, sessionStorage.getItem("user"), sessionStorage.getItem("token"))}}
                             className={`${this.state.likes.indexOf(sessionStorage.getItem("user")) !== -1 ? "liked" : ""}`}
                             style={{width: "24px", height: "24px"}} 
                             viewBox="0 0 24 24">
@@ -72,7 +69,7 @@ class Post extends React.Component {
                         </div>
                         <div className="dislike-info">
                             <svg 
-                            onClick={(e) => {this.likeOrDislike(false, this.state.id, sessionStorage.getItem("user"), sessionStorage.getItem("token"))}}
+                            onClick={(e) => {this.likeOrDislike("false", this.state.id, sessionStorage.getItem("user"), sessionStorage.getItem("token"))}}
                             className={`${this.state.dislikes.indexOf(sessionStorage.getItem("user")) !== -1 ? "disliked" : ""}`}
                             style={{width: "24px", height: "24px"}} 
                             viewBox="0 0 24 24">
@@ -83,7 +80,7 @@ class Post extends React.Component {
                         </div>
                     </div>
                     <div className="date-container">
-                        <p> { Moment(new Date(this.state.date)).fromNow() } </p>
+                        <p> { (this.state.date !== "" ) && (Moment(new Date(this.state.date)).fromNow()) } </p>
                     </div>
                 </div>
             );

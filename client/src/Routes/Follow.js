@@ -14,8 +14,7 @@ class Follow extends React.Component {
         if (this.state.user === null)
             return;
         e.preventDefault();
-        console.log(this.props.current)
-        let response = await fetch(`https://wither.onrender.com/users/${this.props.current}/follow`, {
+        let response = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/users/${this.props.current}/follow`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -24,7 +23,6 @@ class Follow extends React.Component {
             body: JSON.stringify({username: this.state.user, followers: this.props.current})
         })
         response = await response.json();
-        console.log(response);
         if (response.Error)
         {
             // If the user is logged in but their sign in token is bad (sign in token expires after 2 hours), log them out and reload the page
@@ -44,7 +42,7 @@ class Follow extends React.Component {
         {
             // This is altering the parent component's (Profile) state, which causes it to re-render the UserInfo 
             // component with the new follower
-            this.props.updateFollow(response.followed_List);
+            this.props.updateFollow(response.followers);
         }
     }
 

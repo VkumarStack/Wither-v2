@@ -3,6 +3,7 @@ const User = require("../controllers/usersController");
 const { query } = require("express");
 const helper = require("../controllers/helper")
 const e = require("express");
+const PAGINATION_LENGTH = 10;
 
 exports.postExists = async function postExists(postID, session = null){
   try{
@@ -31,17 +32,19 @@ exports.postExists = async function postExists(postID, session = null){
 exports.getPosts = async (req, res) => {
     try{
       let queryConditions = {}
-      if (req.body.pattern) {
-        queryConditions.a_username = { $regex: req.body.pattern, $options: 'i' };
+      if (req.query.pattern) {
+        queryConditions.a_username = { $regex: req.query.pattern, $options: 'i' };
       }
-      if (req.body.cursor) {
-        queryConditions._id = { $lt: req.body.cursor };
+      if (req.query.cursor) {
+        queryConditions._id = { $lt: req.query.cursor };
       }
-      const response = await Post.find(queryConditions).sort({_id: -1}).limit(10);
+      const response = await Post.find(queryConditions).sort({createdAt: -1, _id: -1}).limit(PAGINATION_LENGTH);
       let cursor = null;
       let posts = [];
       if (response.length != 0) {
-        cursor = response[response.length - 1]._id;
+        if (response.length == PAGINATION_LENGTH) {
+          cursor = response[response.length - 1]._id;
+        }
         response.forEach(element => posts.push(element));
       }
       res.send({posts: posts, cursor: cursor});
@@ -61,7 +64,6 @@ exports.getPostID = async function getPostID(req, res) {
         res.json({Error: "Post not found"});
         return;
       }
-      console.log(post.createdAt)
       res.json(post);
     }
     catch{

@@ -44,7 +44,6 @@ exports.createToken = (user) => {
 exports.compareToken = async function compareToken(req, res, next) {
     const auth = req.headers['authorization'];
     const token = auth && auth.split(' ')[1];
-    console.log(token)
     if (token === null) {
         res.json({Error: "No token provided", TokenError: true});
         return;
