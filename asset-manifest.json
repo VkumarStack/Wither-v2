@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/Wither-v2/static/css/main.6c8b21ff.css",
-    "main.js": "/Wither-v2/static/js/main.fd8c1891.js",
+    "main.css": "/Wither-v2/static/css/main.5c9e3c41.css",
+    "main.js": "/Wither-v2/static/js/main.a9aa1dcd.js",
     "static/js/787.c4e7f8f9.chunk.js": "/Wither-v2/static/js/787.c4e7f8f9.chunk.js",
     "static/media/Beccaria.ttf": "/Wither-v2/static/media/Beccaria.65fec4b293ad45e18d66.ttf",
     "index.html": "/Wither-v2/index.html",
     "static/media/right.svg": "/Wither-v2/static/media/right.f47db25cd168d0c024952dcd2d611c4f.svg",
     "static/media/left.svg": "/Wither-v2/static/media/left.dec15e4d4d78432e5f8dddce80129e5f.svg",
-    "main.6c8b21ff.css.map": "/Wither-v2/static/css/main.6c8b21ff.css.map",
-    "main.fd8c1891.js.map": "/Wither-v2/static/js/main.fd8c1891.js.map",
+    "main.5c9e3c41.css.map": "/Wither-v2/static/css/main.5c9e3c41.css.map",
+    "main.a9aa1dcd.js.map": "/Wither-v2/static/js/main.a9aa1dcd.js.map",
     "787.c4e7f8f9.chunk.js.map": "/Wither-v2/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6c8b21ff.css",
-    "static/js/main.fd8c1891.js"
+    "static/css/main.5c9e3c41.css",
+    "static/js/main.a9aa1dcd.js"
   ]
 }
