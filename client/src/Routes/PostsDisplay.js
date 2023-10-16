@@ -41,7 +41,7 @@ class PostDisplay extends React.Component {
     async getPosts() {
         let usernamePattern = "";
         if (this.props.usernames && this.props.usernames.length > 0) {
-            const groups = this.props.usernames.map((name) => `(${name})`)
+            const groups = this.props.usernames.map((name) => `(^${name}$)`)
             usernamePattern = groups.join("|")
         }
         let posts = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/posts?pattern=${usernamePattern}`)
