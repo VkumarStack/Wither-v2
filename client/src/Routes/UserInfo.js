@@ -1,27 +1,20 @@
-import React from "react";
-import { ReactDOM } from "react";
+import { useLocation } from "react-router-dom";
 import '../Stylesheets/userinfo.css';
 
-class UserInfo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: window.location.href.split("/").pop(),
-        }
-    }
+function UserInfo(props) {
+    const location = useLocation();
 
     /* TODO: Include a follower count (just display the length of this.props.userinfo.a_followers) */
-    render() {
-        return (
-            <div className="UserInfo">
-                <h1> @{this.state.user}</h1>
-                <h2></h2>
-                <h3> {this.props.followers.length} followers </h3>
-                <h2></h2>
-                <p> {this.props.bio} </p>
-            </div>
-        );
-    }
+    return (
+        <div className="UserInfo">
+            <h1> @{location.pathname.split("/").pop()}</h1>
+            <h2></h2>
+            <h3> {props.followers.length} followers </h3>
+            <h2></h2>
+            <p> {props.bio} </p>
+        </div>
+    );
+
 }
 
 export default UserInfo;
