@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./Post";
+import { Link } from "react-router-dom";
 import "../Stylesheets/postdisplay.css";
 
 class PostDisplay extends React.Component {
@@ -9,11 +10,13 @@ class PostDisplay extends React.Component {
         super(props);
         this.state = {
             posts: [],
+            suggestions: []
         };
     }
 
     componentDidMount() {
         this.getPosts();
+        this.getSuggestions();
     }
 
     componentDidUpdate(prevProps) {
@@ -35,6 +38,8 @@ class PostDisplay extends React.Component {
         if (newUsernames) {
             this.setState({posts: []});
             this.getPosts();
+            this.setState({suggestions: []});
+            this.getSuggestions();
         }
     }
 
@@ -55,15 +60,36 @@ class PostDisplay extends React.Component {
         
         const posts = this.state.posts.map((post) => <Post post={post} key={post._id}/>)
 
-        return posts;
+        return posts;   
+    }
+
+    async getSuggestions() {
+        if (this.props.suggest !== undefined) {
+            let suggestions = await fetch((process.env.REACT_APP_BACKEND_URL || "http://localhost:8080") + `/users/${this.props.suggest}/suggest`);
+            suggestions = await suggestions.json();
+            suggestions = suggestions.users;
+            if (!suggestions.Error) {
+                this.setState({suggestions: suggestions.map((item) => {return item.a_username})})
+            }
+        }
+    }
+
+    generateSuggestions() {
+        if (this.state.suggestions.length === 0)
+            return;
         
+        return this.state.suggestions.map((suggestion) => <div className="Suggestion"> <Link to={`/users/${suggestion}`} key={suggestion.toLowerCase()}> {suggestion} </Link> </div>)
     }
 
     render() {
-        this.generatePosts();
         return (
             <div className="PostDisplay">
                 { this.generatePosts()}
+                <div className="Suggestions">
+                    { this.state.suggestions.length !== 0 && 
+                      <div className="SuggestionsMessage"> <h1> Looks like you've reached the end of the timeline. Why not follow some new users? </h1></div>  }
+                    { this.generateSuggestions() }
+                </div>
             </div>
         );
     }

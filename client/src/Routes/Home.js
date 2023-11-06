@@ -33,7 +33,7 @@ class Home extends React.Component {
             return (
                 <div className="Home">
                     <HeaderBar/>
-                    <PostsDisplay/>
+                    <PostsDisplay suggest={" "}/>
                 </div>
             );
         else
@@ -41,7 +41,7 @@ class Home extends React.Component {
                 <div className="Home">
                     <HeaderBar/>
                     <CreatePost/>
-                    <PostsDisplay usernames={this.state.usernames}/>
+                    <PostsDisplay usernames={this.state.usernames} suggest={sessionStorage.getItem("user")}/>
                 </div>
             );
     }

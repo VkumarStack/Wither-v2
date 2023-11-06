@@ -8,3 +8,37 @@
     width: 100%;
 }
 
+.PostDisplay .Suggestions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.PostDisplay .Suggestions .SuggestionsMessage {
+    background-color: rgb(61, 33, 33);
+    box-shadow: 5px 10px 5px rgb(36, 17, 17);
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.PostDisplay .Suggestions .Suggestion {
+    background-color: rgb(61, 33, 33);
+    box-shadow: 5px 10px 5px rgb(36, 17, 17);
+    border-radius: 15px;
+    width: 200px;
+    height: 50px;
+    padding: 2.5px;
+    font-size: 1.3em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PostDisplay .Suggestions .Suggestion:hover {
+    background-color: rgb(27, 25, 25);
+    color: white;
+}

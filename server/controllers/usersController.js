@@ -137,6 +137,20 @@ exports.followUser = async (req, res) => {
   */
 }
 
+exports.suggestUser = async(req, res) => {
+  try {
+    const query = {a_username: {$ne: `${req.params.userID}`}, a_followers: {$nin: [`${req.params.userID}`]}}
+
+    const result = await User.aggregate([
+      {$match: query},
+      {$sample: {size: 5}}
+    ])
+    res.json({users: result})
+  } catch {
+    res.json({Error: "Could not suggest users to follow"});
+  }
+}
+
 //Edit bio
 exports.validateBio = async(req, res, next) => {
 try {

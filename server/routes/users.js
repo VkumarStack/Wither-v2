@@ -34,6 +34,8 @@ router.put("/:userID/follow", users_controller.followUser);
 router.put("/:userID/bio", auth_controller.compareToken);
 router.put("/:userID/bio", users_controller.validateBio);
 router.put("/:userID/bio", users_controller.editBio);
+
+router.get("/:userID/suggest", users_controller.suggestUser);
 // We need one more function that checks to make sure the registration data is valid (test the username and 
 // password with a Regex expression)
 router.post("/", users_controller.validateRegistration);
